@@ -5,13 +5,16 @@ pydantic==2.5.0
 python-multipart==0.0.6
 cors==1.0.1
 
-# Machine Learning dependencies for training
-torch>=2.0.0
-transformers>=4.30.0
-datasets>=2.14.0
-accelerate>=0.20.0
-numpy>=1.24.0
-scikit-learn>=1.3.0
+# Machine Learning dependencies
+torch==2.1.1
+transformers==4.35.2
+datasets==2.14.6
+accelerate==0.24.1
+
+# Database and Authentication
+sqlalchemy==2.0.23
+bcrypt==4.1.2
+python-jose[cryptography]==3.3.0
 
 # For automatic retraining
 schedule>=1.2.0

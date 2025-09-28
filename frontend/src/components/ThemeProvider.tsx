@@ -29,6 +29,16 @@ export function ThemeProvider({
   const [theme, setTheme] = useState<Theme>(defaultTheme)
 
   useEffect(() => {
+    const savedTheme = localStorage.getItem('theme') as Theme
+    if (savedTheme && (savedTheme === 'light' || savedTheme === 'dark')) {
+      setTheme(savedTheme)
+    } else {
+      // Default to light mode
+      setTheme('light')
+    }
+  }, [])
+
+  useEffect(() => {
     const root = window.document.documentElement
     root.classList.remove('light', 'dark')
     root.classList.add(theme)

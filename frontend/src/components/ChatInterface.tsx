@@ -8,7 +8,9 @@ import Sidebar from './Sidebar'
 import ChatMessage from './ChatMessage'
 import Toast from './Toast'
 import { generateChatTitle } from '../lib/titleGenerator'
-import { API_ENDPOINTS } from '../config/api'
+import { API_ENDPOINTS, getAuthHeaders } from '../config/api'
+import { useAuth } from '../contexts/AuthContext'
+import UserProfileDropdown from './UserProfileDropdown'
 
 export default function ChatInterface() {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
@@ -20,7 +22,9 @@ export default function ChatInterface() {
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
   const { theme, setTheme } = useTheme()
+  const { isAuthenticated, logout, user, updateTheme } = useAuth()
   const [toast, setToast] = useState<{ message: string; type: 'info' | 'success' | 'warning' | 'error' } | null>(null)
+  const [isInitializing, setIsInitializing] = useState(true)
 
   useEffect(() => {
     // Auto-create first chat if none exists
@@ -35,6 +39,13 @@ export default function ChatInterface() {
       })
     }
   }, [])
+
+  // Sync theme with user preference
+  useEffect(() => {
+    if (user && user.theme_preference !== theme) {
+      setTheme(user.theme_preference as 'light' | 'dark')
+    }
+  }, [user, theme, setTheme])
 
   useEffect(() => {
     scrollToBottom()
@@ -57,17 +68,42 @@ export default function ChatInterface() {
   }, [])
 
   const initializeChat = async () => {
-    const chats = await db.getChats()
-    if (chats.length === 0) {
-      const newChat = await db.createChat('New Chat')
-      setCurrentChat(newChat)
-      setMessages([])
-    } else {
-      const chat = await db.getChat(chats[0].id)
-      if (chat) {
-        setCurrentChat(chat)
-        setMessages(chat.messages)
+    try {
+      const chats = await db.getChats()
+      
+      if (chats.length === 0) {
+        const newChat = await db.createChat('New Chat')
+        setCurrentChat(newChat)
+        setMessages([])
+        db.setCurrentChatId(newChat.id)
+      } else {
+        // Try to restore the last active chat
+        const lastChatId = db.getCurrentChatId()
+        let chatToLoad = null
+        
+        if (lastChatId) {
+          chatToLoad = await db.getChat(lastChatId)
+        }
+        
+        // If last chat doesn't exist, use the most recent one
+        if (!chatToLoad) {
+          chatToLoad = await db.getChat(chats[0].id)
+        }
+        
+        if (chatToLoad) {
+          setCurrentChat(chatToLoad)
+          setMessages(chatToLoad.messages)
+          db.setCurrentChatId(chatToLoad.id)
+        }
       }
+    } catch (error) {
+      console.error('Error initializing chat:', error)
+      setToast({
+        message: 'Error loading chat history. Starting fresh.',
+        type: 'warning'
+      })
+    } finally {
+      setIsInitializing(false)
     }
   }
 
@@ -84,6 +120,7 @@ export default function ChatInterface() {
     if (chat) {
       setCurrentChat(chat)
       setMessages(chat.messages)
+      db.setCurrentChatId(chatId) // Remember the selected chat
     }
     setSidebarOpen(false)
   }
@@ -92,6 +129,7 @@ export default function ChatInterface() {
     const newChat = await db.createChat('New Chat')
     setCurrentChat(newChat)
     setMessages([])
+    db.setCurrentChatId(newChat.id) // Remember the new chat
     setSidebarOpen(false)
     // Focus input after creating new chat
     setTimeout(() => inputRef.current?.focus(), 100)
@@ -117,9 +155,7 @@ export default function ChatInterface() {
       // Call the bot API
       const response = await fetch(API_ENDPOINTS.CHAT, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: getAuthHeaders(),
         body: JSON.stringify({
           message: messageText,
           chat_id: currentChat.id
@@ -127,12 +163,24 @@ export default function ChatInterface() {
       })
 
       if (!response.ok) {
+        if (response.status === 401) {
+          // Authentication failed, logout user
+          logout()
+          setToast({
+            message: 'Your session has expired. Please log in again.',
+            type: 'warning'
+          })
+          return
+        }
         throw new Error('Failed to get bot response')
       }
 
       const data = await response.json()
       const aiMessage = await db.addMessage(currentChat.id, data.response, 'sasha')
       setMessages(prev => [...prev, aiMessage])
+
+      // Announce AI response to screen readers
+      announceMessage(data.response, 'sasha')
 
       // Auto-generate title after first AI response
       if (isFirstMessage && currentChat.title === 'New Chat') {
@@ -174,8 +222,36 @@ export default function ChatInterface() {
     }
   }
 
+  // Announce new messages to screen readers
+  const announceMessage = (message: string, sender: string) => {
+    const announcement = `${sender === 'user' ? 'You said' : 'Sasha replied'}: ${message}`
+    const ariaLive = document.getElementById('aria-live-region')
+    if (ariaLive) {
+      ariaLive.textContent = announcement
+      // Clear after announcement
+      setTimeout(() => {
+        ariaLive.textContent = ''
+      }, 1000)
+    }
+  }
+
   return (
     <div className="flex h-screen bg-white dark:bg-gray-900" onKeyDown={handleKeyDown}>
+      {/* Skip Link for Keyboard Navigation */}
+      <a
+        href="#message-input"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-blue-600 focus:text-white focus:rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300"
+      >
+        Skip to message input
+      </a>
+      
+      {/* Screen Reader Announcements */}
+      <div
+        id="aria-live-region"
+        aria-live="polite"
+        aria-atomic="true"
+        className="sr-only"
+      />
       {/* Sidebar */}
       <Sidebar
         isOpen={sidebarOpen}
@@ -190,65 +266,92 @@ export default function ChatInterface() {
       {/* Main Chat Area */}
       <div className="flex-1 flex flex-col">
         {/* Header */}
-        <header className="flex items-center justify-between px-4 py-4 border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 h-[73px]">
+        <header className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
           <div className="flex items-center gap-3">
-            {/* Mobile hamburger menu */}
             <button
               onClick={() => setSidebarOpen(!sidebarOpen)}
-              className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 lg:hidden"
+              className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 lg:hidden focus:outline-none focus:ring-2 focus:ring-blue-500"
               aria-label="Toggle sidebar"
+              aria-expanded={sidebarOpen}
             >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
               </svg>
             </button>
             
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white truncate">
+            <h1 className="text-lg font-semibold text-gray-900 dark:text-white truncate">
               {currentChat?.title || 'New Chat'}
-            </h2>
+            </h1>
           </div>
           
-          {/* Theme Toggle */}
-          <button
-            onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-            className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800"
-            aria-label="Toggle theme"
-          >
-            {theme === 'dark' ? (
-              <svg className="w-5 h-5 text-yellow-500" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M12 2.25a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V3a.75.75 0 01.75-.75zM7.5 12a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM18.894 6.166a.75.75 0 00-1.06-1.06l-1.591 1.59a.75.75 0 101.06 1.061l1.591-1.59zM21.75 12a.75.75 0 01-.75.75h-2.25a.75.75 0 010-1.5H21a.75.75 0 01.75.75zM17.834 18.894a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 10-1.061 1.06l1.59 1.591zM12 18a.75.75 0 01.75.75V21a.75.75 0 01-1.5 0v-2.25A.75.75 0 0112 18zM7.758 17.303a.75.75 0 00-1.061-1.06l-1.591 1.59a.75.75 0 001.06 1.061l1.591-1.59zM6 12a.75.75 0 01-.75.75H3a.75.75 0 010-1.5h2.25A.75.75 0 016 12zM6.697 7.757a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 00-1.061 1.06l1.59 1.591z" />
-              </svg>
-            ) : (
-              <svg className="w-5 h-5 text-gray-700" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M9.528 1.718a.75.75 0 01.162.819A8.97 8.97 0 009 6a9 9 0 009 9 8.97 8.97 0 003.463-.69.75.75 0 01.981.98 10.503 10.503 0 01-9.694 6.46c-5.799 0-10.5-4.701-10.5-10.5 0-4.368 2.667-8.112 6.46-9.694a.75.75 0 01.818.162z" />
-              </svg>
-            )}
-          </button>
+          {/* User Profile and Theme Toggle */}
+          <div className="flex items-center gap-2">
+            {/* Theme Toggle */}
+            <button
+              onClick={async () => {
+                const newTheme = theme === 'dark' ? 'light' : 'dark'
+                setTheme(newTheme)
+                if (user) {
+                  await updateTheme(newTheme)
+                }
+              }}
+              className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+            >
+              {theme === 'dark' ? (
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                </svg>
+              ) : (
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                </svg>
+              )}
+            </button>
+            
+            {/* User Profile Dropdown */}
+            <UserProfileDropdown />
+          </div>
         </header>
 
         {/* Messages Area */}
-        <div className="flex-1 overflow-y-auto">
-          {messages.length === 0 ? (
+        <main 
+          className="flex-1 overflow-y-auto"
+          role="main"
+          aria-label="Chat conversation"
+        >
+          {isInitializing ? (
             <div className="flex items-center justify-center h-full">
               <div className="text-center">
-                <div className="w-16 h-16 bg-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <span className="text-2xl font-bold text-white">S</span>
-                </div>
-                <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+                <div className="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+                <p className="text-gray-600 dark:text-gray-400">
+                  Loading your chat history...
+                </p>
+              </div>
+            </div>
+          ) : messages.length === 0 ? (
+            <div className="flex items-center justify-center h-full">
+              <div className="text-center">
+                <h2 className="text-xl font-medium text-gray-900 dark:text-white mb-2">
                   Welcome to Sasha AI
-                </h3>
+                </h2>
                 <p className="text-gray-600 dark:text-gray-400">
                   Start a conversation by typing a message below
                 </p>
               </div>
             </div>
           ) : (
-            <div className="pb-4">
-              {messages.map((message) => (
-                <ChatMessage key={message.id} message={message} />
+            <div className="pb-4" role="log" aria-live="polite" aria-label="Chat messages">
+              {messages.map((message, index) => (
+                <ChatMessage 
+                  key={message.id} 
+                  message={message}
+                  aria-posinset={index + 1}
+                  aria-setsize={messages.length}
+                />
               ))}
               {isLoading && (
-                <div className="flex gap-3 p-4">
+                <div className="flex gap-3 p-4" role="status" aria-label="Sasha is typing">
                   <div className="w-8 h-8 rounded-full bg-purple-600 flex items-center justify-center text-sm font-medium text-white">
                     S
                   </div>
@@ -258,32 +361,51 @@ export default function ChatInterface() {
                       <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
                       <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
                     </div>
+                    <span className="sr-only">Sasha is typing a response</span>
                   </div>
                 </div>
               )}
               <div ref={messagesEndRef} />
             </div>
           )}
-        </div>
+        </main>
 
         {/* Input Area */}
         <div className="border-t border-gray-200 dark:border-gray-700 p-4 bg-white dark:bg-gray-900">
-          <form onSubmit={handleSendMessage} className="flex gap-3">
+          <form onSubmit={handleSendMessage} className="flex gap-3" role="form" aria-label="Send message">
+            <label htmlFor="message-input" className="sr-only">
+              Type your message to Sasha AI
+            </label>
             <input
+              id="message-input"
               ref={inputRef}
               type="text"
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
               placeholder="Type your message..."
               autoFocus
+              aria-describedby="send-button"
+              aria-invalid={false}
               className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
             />
             <button
+              id="send-button"
               type="submit"
               disabled={!inputValue.trim() || isLoading}
-              className="px-6 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white rounded-lg transition-colors disabled:cursor-not-allowed"
+              aria-label={isLoading ? "Sending message..." : "Send message"}
+              className="px-6 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white rounded-lg transition-colors disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
-              Send
+              {isLoading ? (
+                <>
+                  <span className="sr-only">Sending...</span>
+                  <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24" aria-hidden="true">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                </>
+              ) : (
+                'Send'
+              )}
             </button>
           </form>
         </div>

@@ -13,7 +13,8 @@ class ChatDatabase {
   private readonly STORAGE_KEYS = {
     CHATS: 'sasha_chats',
     MESSAGES: 'sasha_messages',
-    ARCHIVED: 'sasha_archived_chats'
+    ARCHIVED: 'sasha_archived_chats',
+    CURRENT_CHAT: 'sasha_current_chat_id'
   }
 
   constructor() {
@@ -162,6 +163,12 @@ class ChatDatabase {
   async deleteChat(id: string): Promise<boolean> {
     const deleted = this.chats.delete(id)
     this.messages.delete(id)
+    
+    // Clear current chat ID if this was the active chat
+    if (this.getCurrentChatId() === id) {
+      this.clearCurrentChatId()
+    }
+    
     this.saveToStorage()
     return deleted
   }
@@ -184,6 +191,11 @@ class ChatDatabase {
     // Remove from active chats
     this.chats.delete(id)
     this.messages.delete(id)
+    
+    // Clear current chat ID if this was the active chat
+    if (this.getCurrentChatId() === id) {
+      this.clearCurrentChatId()
+    }
     
     this.saveToStorage()
     return true
@@ -230,6 +242,22 @@ class ChatDatabase {
     }
     
     return expiredIds.length
+  }
+
+  // Save/get current chat ID for persistence
+  setCurrentChatId(chatId: string): void {
+    if (typeof window === 'undefined') return
+    localStorage.setItem(this.STORAGE_KEYS.CURRENT_CHAT, chatId)
+  }
+
+  getCurrentChatId(): string | null {
+    if (typeof window === 'undefined') return null
+    return localStorage.getItem(this.STORAGE_KEYS.CURRENT_CHAT)
+  }
+
+  clearCurrentChatId(): void {
+    if (typeof window === 'undefined') return
+    localStorage.removeItem(this.STORAGE_KEYS.CURRENT_CHAT)
   }
 }
 

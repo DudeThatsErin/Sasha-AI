@@ -17,3 +17,12 @@ export const API_ENDPOINTS = {
   HEALTH: `${API_BASE_URL}/health`,
   STATUS: `${API_BASE_URL}/model/status`
 }
+
+// Helper function to get auth headers
+export const getAuthHeaders = (): Record<string, string> => {
+  const token = typeof window !== 'undefined' ? localStorage.getItem('sasha_auth_token') : null
+  return {
+    'Content-Type': 'application/json',
+    ...(token && { 'Authorization': `Bearer ${token}` })
+  }
+}
