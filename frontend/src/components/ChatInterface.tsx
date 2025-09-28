@@ -6,24 +6,55 @@ import { db } from '../lib/database'
 import { useTheme } from './ThemeProvider'
 import Sidebar from './Sidebar'
 import ChatMessage from './ChatMessage'
+import Toast from './Toast'
+import { generateChatTitle } from '../lib/titleGenerator'
+import { API_ENDPOINTS } from '../config/api'
 
 export default function ChatInterface() {
-  const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
+  const [sidebarOpen, setSidebarOpen] = useState(false) // For mobile overlay
   const [currentChat, setCurrentChat] = useState<Chat | null>(null)
   const [messages, setMessages] = useState<Message[]>([])
   const [inputValue, setInputValue] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)
+  const inputRef = useRef<HTMLInputElement>(null)
   const { theme, setTheme } = useTheme()
+  const [toast, setToast] = useState<{ message: string; type: 'info' | 'success' | 'warning' | 'error' } | null>(null)
 
   useEffect(() => {
     // Auto-create first chat if none exists
     initializeChat()
+    
+    // Clean up expired archives and notify user
+    const cleanedCount = db.cleanupExpiredArchives()
+    if (cleanedCount > 0) {
+      setToast({
+        message: `${cleanedCount} archived chat${cleanedCount > 1 ? 's' : ''} automatically deleted after 24 hours`,
+        type: 'info'
+      })
+    }
   }, [])
 
   useEffect(() => {
     scrollToBottom()
   }, [messages])
+
+  useEffect(() => {
+    // Set initial sidebar state based on screen size
+    const handleResize = () => {
+      if (window.innerWidth < 1024) { // Mobile
+        setSidebarOpen(false) // Closed by default on mobile
+      }
+    }
+
+    // Set initial state
+    handleResize()
+    
+    // Listen for window resize
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
 
   const initializeChat = async () => {
     const chats = await db.getChats()
@@ -44,6 +75,10 @@ export default function ChatInterface() {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }
 
+  const showToast = (message: string, type: 'info' | 'success' | 'warning' | 'error' = 'info') => {
+    setToast({ message, type })
+  }
+
   const handleChatSelect = async (chatId: string) => {
     const chat = await db.getChat(chatId)
     if (chat) {
@@ -58,21 +93,29 @@ export default function ChatInterface() {
     setCurrentChat(newChat)
     setMessages([])
     setSidebarOpen(false)
+    // Focus input after creating new chat
+    setTimeout(() => inputRef.current?.focus(), 100)
   }
 
   const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!inputValue.trim() || !currentChat || isLoading) return
 
-    const userMessage = await db.addMessage(currentChat.id, inputValue.trim(), 'user')
-    setMessages(prev => [...prev, userMessage])
     const messageText = inputValue.trim()
+    const isFirstMessage = messages.length === 0
     setInputValue('')
     setIsLoading(true)
 
+    // Immediately restore focus after clearing input
+    setTimeout(() => inputRef.current?.focus(), 0)
+
     try {
+      // Add user message to database and update state
+      const userMessage = await db.addMessage(currentChat.id, messageText, 'user')
+      setMessages(prev => [...prev, userMessage])
+
       // Call the bot API
-      const response = await fetch('http://localhost:8000/chat', {
+      const response = await fetch(API_ENDPOINTS.CHAT, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -90,6 +133,15 @@ export default function ChatInterface() {
       const data = await response.json()
       const aiMessage = await db.addMessage(currentChat.id, data.response, 'sasha')
       setMessages(prev => [...prev, aiMessage])
+
+      // Auto-generate title after first AI response
+      if (isFirstMessage && currentChat.title === 'New Chat') {
+        const newTitle = generateChatTitle(messageText)
+        const success = await db.updateChatTitle(currentChat.id, newTitle)
+        if (success) {
+          setCurrentChat(prev => prev ? { ...prev, title: newTitle } : null)
+        }
+      }
     } catch (error) {
       console.error('Error calling bot API:', error)
       // Fallback to a default response if API fails
@@ -99,17 +151,37 @@ export default function ChatInterface() {
         'sasha'
       )
       setMessages(prev => [...prev, fallbackMessage])
+
+      // Still generate title even with fallback response
+      if (isFirstMessage && currentChat.title === 'New Chat') {
+        const newTitle = generateChatTitle(messageText)
+        const success = await db.updateChatTitle(currentChat.id, newTitle)
+        if (success) {
+          setCurrentChat(prev => prev ? { ...prev, title: newTitle } : null)
+        }
+      }
     } finally {
       setIsLoading(false)
+      // Ensure focus is maintained after loading completes
+      setTimeout(() => inputRef.current?.focus(), 50)
+    }
+  }
+
+  // Handle keyboard navigation
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Escape') {
+      setSidebarOpen(false)
     }
   }
 
   return (
-    <div className="flex h-screen bg-white dark:bg-gray-900">
+    <div className="flex h-screen bg-white dark:bg-gray-900" onKeyDown={handleKeyDown}>
       {/* Sidebar */}
       <Sidebar
         isOpen={sidebarOpen}
+        isCollapsed={sidebarCollapsed}
         onToggle={() => setSidebarOpen(!sidebarOpen)}
+        onCollapse={() => setSidebarCollapsed(!sidebarCollapsed)}
         currentChatId={currentChat?.id || null}
         onChatSelect={handleChatSelect}
         onNewChat={handleNewChat}
@@ -118,17 +190,20 @@ export default function ChatInterface() {
       {/* Main Chat Area */}
       <div className="flex-1 flex flex-col">
         {/* Header */}
-        <header className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
+        <header className="flex items-center justify-between px-4 py-4 border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 h-[73px]">
           <div className="flex items-center gap-3">
+            {/* Mobile hamburger menu */}
             <button
               onClick={() => setSidebarOpen(!sidebarOpen)}
               className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 lg:hidden"
+              aria-label="Toggle sidebar"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
               </svg>
             </button>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+            
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-white truncate">
               {currentChat?.title || 'New Chat'}
             </h2>
           </div>
@@ -137,6 +212,7 @@ export default function ChatInterface() {
           <button
             onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
             className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800"
+            aria-label="Toggle theme"
           >
             {theme === 'dark' ? (
               <svg className="w-5 h-5 text-yellow-500" fill="currentColor" viewBox="0 0 24 24">
@@ -194,12 +270,13 @@ export default function ChatInterface() {
         <div className="border-t border-gray-200 dark:border-gray-700 p-4 bg-white dark:bg-gray-900">
           <form onSubmit={handleSendMessage} className="flex gap-3">
             <input
+              ref={inputRef}
               type="text"
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
               placeholder="Type your message..."
-              disabled={isLoading}
-              className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-white disabled:opacity-50"
+              autoFocus
+              className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
             />
             <button
               type="submit"
@@ -211,6 +288,15 @@ export default function ChatInterface() {
           </form>
         </div>
       </div>
+
+      {/* Toast Notifications */}
+      {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={() => setToast(null)}
+        />
+      )}
     </div>
   )
 }
