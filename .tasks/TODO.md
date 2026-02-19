@@ -37,8 +37,9 @@
 
 ## 🔴 Critical Blockers (Must Fix First)
 
-- [ ] **`main.py` references `ChatRequest` but it is never defined** — only `MessageRequest` is defined. The `/chat` endpoint will crash on startup. Fix: rename `MessageRequest` → `ChatRequest` or add `ChatRequest = MessageRequest`.
-- [ ] **`lib/model_handler.py` does not exist** — `main.py` imports `from lib.model_handler import ModelHandler` but the file in `lib/` is `model_manager.py` with class `ModelManager`. Fix: either rename the file/class or update the import.
+- [x] **`main.py` references `ChatRequest` but it is never defined** — renamed `MessageRequest` → `ChatRequest` in `main.py`.
+- [x] **`lib/model_handler.py` does not exist** — fixed import to `from lib.model_manager import ModelManager` and instantiation to `ModelManager()`.
+- [x] **`json` module not imported** — added `import json` to `main.py` (used by the retrain endpoint).
 - [ ] **`SECRET_KEY` is hardcoded** in `lib/auth.py` — must be moved to an environment variable before any public exposure.
 - [ ] **Default admin password is hardcoded** (`admin123`) — change immediately after first run.
 
@@ -47,49 +48,48 @@
 ## 🟡 High Priority — Core Functionality
 
 ### 1. Fix Backend Bugs (above blockers)
-- [ ] Resolve `ChatRequest` / `MessageRequest` naming mismatch in `main.py`
-- [ ] Resolve `ModelHandler` vs `ModelManager` import mismatch
+- [x] Resolve `ChatRequest` / `MessageRequest` naming mismatch in `main.py`
+- [x] Resolve `ModelHandler` vs `ModelManager` import mismatch
+- [x] Add missing `import json` to `main.py`
+- [x] Update `requirements.txt` to latest versions, drop torch/transformers/datasets/accelerate
+- [x] Swap DialoGPT/PyTorch for Ollama API (`lib/model_manager.py` rewritten)
+- [x] Remove auth requirement from `/chat` — now fully public for portfolio visitors
+- [x] Add conversation history support to `/chat` request
 - [ ] Move `SECRET_KEY` to `.env` / environment variable
 
-### 2. Write Erin-Specific Training Data
-- [ ] Replace the 15 generic conversations in `config/training_data.json` with real Q&A about Erin:
-  - Who are you? What do you do?
-  - What's your tech stack / favorite languages?
-  - What projects have you built?
-  - What's your work experience?
-  - What are your hobbies / interests?
-  - What are you looking for in a job?
-  - How do people contact you?
-  - What's your personality like?
-  - Opinions on tools, frameworks, editors, etc.
-- [ ] Aim for **100–200 high-quality conversation pairs** before first training run
-- [ ] Keep the format: `[{"user": "...", "assistant": "..."}]`
+### 2. Fill In the System Prompt (replaces training data)
+No training runs needed — Sasha now uses Ollama with a system prompt.
+- [ ] Open `backend/config/app_config.py` and fill in the `SYSTEM_PROMPT` with real details:
+  - Your location / region
+  - Tech stack (languages, frameworks, tools you use daily)
+  - Key projects (name, what it does, tech used)
+  - Work experience summary
+  - Education
+  - Hobbies & interests outside of work
+  - Personality / communication style
+  - What roles/opportunities you're open to
+  - Preferred contact method
+- [ ] The more detail you add, the better Sasha sounds — aim for 300–500 words in the prompt
 
-### 3. Train the Initial Model
-- [ ] Install dependencies: `pip install -r requirements.txt` (run from `backend/`)
-- [ ] Run initial training: `python scripts/train_initial.py` (from `backend/`)
-- [ ] Verify model saved to `backend/models/sasha_model/`
-- [ ] Test via: `python main.py` then `curl http://localhost:8000/health`
+### 3. Install Dependencies & Start the Backend
+- [ ] `pip install -r requirements.txt` (from `backend/`)
+- [ ] Ensure Ollama is running: `ollama serve` (or it may already be running)
+- [ ] Start backend: `python main.py` (from `backend/`)
+- [ ] Test: `curl http://localhost:8000/health` — should show `ollama_running: true`
 
 ### 4. Verify Frontend ↔ Backend Connection
-- [ ] Confirm `src/config/api.ts` points to the correct local backend URL (`http://localhost:8000`)
-- [ ] Start backend: `python main.py` (from `backend/`)
+- [ ] Confirm `src/config/api.ts` points to `http://localhost:8000`
 - [ ] Start frontend: `npm run dev` (from `frontend/`)
-- [ ] Log in with admin credentials and send a test message
-- [ ] Confirm responses come from the model (not fallback canned responses)
+- [ ] Send a test message — confirm Sasha responds with Ollama (not a canned fallback)
+- [ ] Verify conversation history is passed correctly (multi-turn chat works)
 
 ---
 
 ## 🟠 Medium Priority — Portfolio Integration
 
 ### 5. Make the Chat Public-Facing (No Login Required for Visitors)
-- [ ] Currently the `/chat` endpoint requires JWT auth — portfolio visitors won't have accounts
-- [ ] **Decision needed:** Either:
-  - **(A) Remove auth from `/chat`** — anyone can chat, no login needed (simplest for portfolio)
-  - **(B) Add a guest/anonymous token** — auto-issue a short-lived token on page load
-  - **(C) Keep auth, add a "Chat as Guest" button** on the login page
-- [ ] Recommended: **Option A** — remove `Depends(get_current_user_dependency)` from the `/chat` route for public use
-- [ ] Update frontend to skip login and go straight to chat for portfolio visitors
+- [x] Removed `Depends(get_current_user_dependency)` from `/chat` — now fully public
+- [ ] Update frontend to skip login and go straight to chat for portfolio visitors (currently shows login page by default)
 
 ### 6. Embed in Portfolio
 - [ ] Decide on embed method:

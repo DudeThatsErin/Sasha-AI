@@ -1,20 +1,16 @@
 # Core FastAPI dependencies
-fastapi==0.104.1
-uvicorn==0.24.0
-pydantic==2.5.0
-python-multipart==0.0.6
-cors==1.0.1
+fastapi>=0.115.0
+uvicorn>=0.34.0
+pydantic>=2.10.0
+python-multipart>=0.0.20
 
-# Machine Learning dependencies
-torch==2.1.1
-transformers==4.35.2
-datasets==2.14.6
-accelerate==0.24.1
+# Ollama API client
+httpx>=0.28.0
 
 # Database and Authentication
-sqlalchemy==2.0.23
-bcrypt==4.1.2
-python-jose[cryptography]==3.3.0
+sqlalchemy>=2.0.40
+bcrypt>=4.3.0
+python-jose[cryptography]>=3.3.0
 
-# For automatic retraining
+# Scheduling
 schedule>=1.2.0
