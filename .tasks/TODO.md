@@ -12,12 +12,10 @@
 - [x] JWT authentication system (`lib/auth.py`, `routes/auth.py`)
   - Default admin user auto-created on startup (`admin` / `admin123`)
   - Register, login, forgot-password routes exist
-- [x] `ModelManager` / `ModelHandler` class — loads a fine-tuned model or falls back to canned responses
-- [x] `SashaTrainer` class — fine-tunes DialoGPT-medium on JSON conversation data
-- [x] `ConversationCollector` — saves every chat turn to `config/collected_conversations.json` for future retraining
-- [x] `AutoRetrainer` — scheduled retraining when enough new conversations accumulate
-- [x] Training data file at `config/training_data.json` (15 generic placeholder conversations — **NOT personalized yet**)
-- [x] API endpoints: `/chat`, `/health`, `/model/status`, `/train/initial`, `/train/retrain`, `/conversations/stats`
+- [x] `ModelManager` class — rewritten to call local Ollama API (`qwen2.5-coder:7b`) with a system prompt
+- [x] `ConversationCollector` — saves every chat turn to `config/collected_conversations.json` for review
+- [x] API endpoints: `/chat` (public), `/health`, `/model/status`, `/conversations/stats`
+- [x] Ollama system prompt scaffolded in `config/app_config.py` — **needs real Erin details filled in**
 - [x] CORS pre-configured for `chat.erinskidds.com` and `api.erinskidds.com`
 - [x] `requirements.txt` with all dependencies listed
 
@@ -92,18 +90,18 @@ No training runs needed — Sasha now uses Ollama with a system prompt.
 - [ ] Update frontend to skip login and go straight to chat for portfolio visitors (currently shows login page by default)
 
 ### 6. Embed in Portfolio
-- [ ] Decide on embed method:
-  - **(A) iframe** — embed `chat.erinskidds.com` in an iframe on the portfolio page
-  - **(B) Widget** — build a floating chat bubble component in the portfolio repo
-  - **(C) Dedicated page** — link to `chat.erinskidds.com` from portfolio
-- [ ] Add a brief intro on the chat page: "Hi! I'm Sasha, Erin's AI. Ask me anything about her!"
+- [x] Method decided: **(B) Floating chat bubble widget** in the portfolio repo (see `.tasks/EMBED-WIDGET.md`)
+- [x] Fallback: link to `chat.erinskidds.com` for full-screen experience
+- [ ] Implement the widget in `portfolio-next/src/components/SashaWidget.tsx` (code is in `EMBED-WIDGET.md`)
+- [ ] Add widget to `portfolio-next/src/app/layout.tsx`
+- [ ] Add `NEXT_PUBLIC_SASHA_API_URL` env var to portfolio
+- [ ] Update frontend to skip login and go straight to chat for portfolio visitors (currently shows login page by default)
 - [ ] Remove the Register page from public view (or hide it) — visitors shouldn't need to create accounts
 
 ### 7. Personality & Context Improvements
-- [ ] Add a **system prompt** or context prefix to every message so the model always knows it's playing Erin
-  - e.g., prepend: `"You are Sasha, an AI that represents Erin Skidds. Answer as if you are Erin. "`
-- [ ] Consider switching from fine-tuned DialoGPT to an **API-based LLM** (OpenAI GPT-4o, Anthropic Claude, or a local Ollama model) with a system prompt — this is far easier to make sound like a real person and requires no GPU training
-- [ ] If staying with fine-tuning: increase training data significantly and run multiple epochs
+- [x] System prompt added to every Ollama request — model always knows it's playing Erin
+- [x] Switched from fine-tuned DialoGPT to local Ollama (`qwen2.5-coder:7b`) with a system prompt — no GPU training needed
+- [x] Conversation history passed on every `/chat` request — multi-turn context works
 
 ---
 
@@ -121,8 +119,8 @@ No training runs needed — Sasha now uses Ollama with a system prompt.
 
 ### 9. Conversation Persistence
 - [ ] Currently chats are stored in-memory / local browser storage on the frontend
-- [ ] For a portfolio bot, consider storing nothing (stateless per session) or persisting to the SQLite DB
-- [ ] Add conversation history to the `/chat` request so the model has context across a session
+- [x] Conversation history is passed to `/chat` on each request — model has full session context
+- [ ] For a portfolio bot, consider storing nothing (stateless per session) — visitors don't need persistent history
 
 ### 10. UI Tweaks for Portfolio
 - [ ] Update the chat header/branding to say "Chat with Sasha" or "Ask Erin's AI"
@@ -139,11 +137,12 @@ No training runs needed — Sasha now uses Ollama with a system prompt.
 
 ## 📋 Recommended Order of Attack
 
-1. Fix the two critical backend bugs (ChatRequest + ModelHandler)
-2. Write Erin-specific training data (100+ pairs)
-3. Train the model locally and verify it runs
-4. Make `/chat` public (remove auth requirement)
-5. Test end-to-end locally
-6. Set up hosting (see `HOSTING.md`)
-7. Embed in portfolio
-8. Polish UI and add personality context
+1. ~~Fix the two critical backend bugs~~ ✅
+2. ~~Swap DialoGPT for Ollama~~ ✅
+3. ~~Make `/chat` public~~ ✅
+4. **Fill in `SYSTEM_PROMPT` in `backend/config/app_config.py`** with real Erin details ← YOU ARE HERE
+5. `pip install -r requirements.txt` then `python main.py` — verify `ollama_running: true`
+6. Test end-to-end locally (frontend + backend + Ollama all running)
+7. Implement the chat widget in `portfolio-next/` (see `EMBED-WIDGET.md`)
+8. Set up hosting (see `HOSTING.md`)
+9. Move `SECRET_KEY` to `.env` before going public
