@@ -14,3 +14,7 @@ python-jose[cryptography]>=3.3.0
 
 # Scheduling
 schedule>=1.2.0
+
+# Discord bot
+discord.py>=2.3.0
+aiohttp>=3.9.0

@@ -1,24 +1,27 @@
 # Sasha AI Backend
 
-FastAPI backend for Sasha AI — a portfolio chatbot powered by a local Ollama model. No training required; Sasha's personality and knowledge come entirely from a system prompt.
+FastAPI backend for Sasha AI — a portfolio chatbot powered by a local Ollama model. Knowledge is stored in SQLite and managed via a web admin panel and Discord bot.
 
 ## 📁 Project Structure
 
 ```
 backend/
 ├── config/
-│   ├── app_config.py                # API, Ollama, and CORS settings
-│   ├── system_prompt.txt            # ← Edit this to update what Sasha knows about Erin
+│   ├── app_config.py                # API, Ollama, CORS, and Discord settings
+│   ├── system_prompt.txt            # Seed data — imported to DB on first run
 │   └── collected_conversations.json # Chat logs saved at runtime (auto-created)
 ├── lib/
 │   ├── auth.py                      # JWT authentication helpers
 │   ├── conversation_collector.py    # Saves every chat turn for review
-│   ├── database.py                  # SQLite/SQLAlchemy setup
+│   ├── database.py                  # SQLite/SQLAlchemy: Knowledge, PendingKnowledge, User
+│   ├── knowledge_manager.py         # Builds system prompt dynamically from DB
 │   └── model_manager.py             # Ollama API wrapper
-├── logs/                            # Application logs
+├── logs/                            # Application and Discord bot logs
 ├── routes/
 │   └── auth.py                      # Auth endpoints (login, register)
+├── discord_bot.py                   # Discord bot: approval buttons + slash commands
 ├── main.py                          # FastAPI app entry point
+├── .env.example                     # Environment variable template
 └── requirements.txt                 # Python dependencies
 ```
 
@@ -47,18 +50,41 @@ curl http://localhost:8000/health
 
 ## 🧠 How Sasha Learns About Erin
 
-There is no training step. Edit `config/system_prompt.txt` directly — the backend reads it on startup. Restart the server after any changes.
+Knowledge is stored in a SQLite database (`Knowledge` table) and built into the system prompt dynamically on each request. `system_prompt.txt` is only used to seed the DB on first startup.
 
-The prompt already contains Erin's full work history, tech stack, projects, personality, and contact info. Add or update anything there.
+**To manage knowledge:**
+- **Admin UI**: `https://chat.erinskidds.com/admin` — full CRUD, enable/disable entries, pending approval queue
+- **Discord slash commands**: `/knowledge-add`, `/knowledge-list`, `/knowledge-delete`, `/knowledge-toggle`
+
+**Approval workflow (teach-intent):**
+1. Visitor says something like "remember that Erin also speaks Spanish"
+2. Backend detects the teach intent → creates a `PendingKnowledge` entry → Sasha responds "let me ask Erin"
+3. Discord bot pings Erin with ✅ Yes / ❌ No buttons
+4. On approval → entry moves to live `Knowledge` table and Sasha knows it immediately
 
 ## 🎯 API Endpoints
 
 ### Chat
 | Method | Path | Auth | Description |
 |--------|------|------|-------------|
-| `POST` | `/chat` | None | Send a message, get a response |
+| `POST` | `/chat` | None | Send a message; detects teach-intent automatically |
 | `GET` | `/health` | None | Health check |
 | `GET` | `/` | None | Server status + conversation count |
+
+### Knowledge Base
+| Method | Path | Auth | Description |
+|--------|------|------|-------------|
+| `GET` | `/knowledge` | None | List all knowledge entries |
+| `POST` | `/knowledge` | None | Add a new entry |
+| `PUT` | `/knowledge/{id}` | None | Update an entry |
+| `DELETE` | `/knowledge/{id}` | None | Delete an entry |
+
+### Pending Knowledge (Approval Queue)
+| Method | Path | Auth | Description |
+|--------|------|------|-------------|
+| `GET` | `/pending-knowledge` | None | List all pending entries |
+| `POST` | `/pending-knowledge/{id}/approve` | None | Approve → moves to Knowledge table |
+| `POST` | `/pending-knowledge/{id}/deny` | None | Deny → marks as denied |
 
 ### Conversation Logs
 | Method | Path | Auth | Description |
@@ -116,15 +142,22 @@ Response:
 
 ## ⚙️ Configuration
 
-All settings live in `config/app_config.py`:
+All settings live in `config/app_config.py` and `.env`:
 
 | Setting | Default | Description |
 |---------|---------|-------------|
-| `OLLAMA_URL` | `http://localhost:11434` | Override with `OLLAMA_URL` env var |
-| `OLLAMA_MODEL` | `qwen2.5-coder:7b` | Override with `OLLAMA_MODEL` env var |
+| `OLLAMA_URL` | `http://localhost:11434` | Override with env var |
+| `OLLAMA_MODEL` | `qwen2.5-coder:7b` | Override with env var |
 | `MAX_NEW_TOKENS` | `500` | Max response length |
 | `TEMPERATURE` | `0.8` | Response creativity |
 | `CORS_ORIGINS` | `localhost`, `*.erinskidds.com` | Allowed frontend origins |
+| `DISCORD_BOT_TOKEN` | — | Required for Discord bot |
+| `DISCORD_GUILD_ID` | — | Your Discord server ID |
+| `DISCORD_CHANNEL_ID` | — | Channel for approval pings |
+| `DISCORD_OWNER_ID` | — | Your Discord user ID |
+| `DISCORD_NOTIFY_PORT` | `8001` | Internal notify server port |
+
+Copy `.env.example` to `.env` and fill in all values before starting.
 
 ## � Security
 
@@ -151,7 +184,8 @@ Ensure `.env` is in `.gitignore`.
 - Hit `/health` — look for `"ollama": {"running": true}`
 
 **Sasha doesn't know something about Erin**
-- Edit `config/system_prompt.txt` and restart the backend
+- Add it via the admin UI at `chat.erinskidds.com/admin` or use `/knowledge-add` in Discord
+- `system_prompt.txt` is only used to seed the DB on first run — editing it won't affect a running instance
 
 **Import errors on startup**
 - Run `pip install -r requirements.txt` from the `backend/` directory
@@ -194,3 +228,21 @@ cloudflared tunnel run sasha-ai-backend
 ```
 
 The portfolio widget will reach the backend at `https://api.erinskidds.com/chat`.
+
+## 🤖 Discord Bot
+
+The Discord bot runs as a separate NSSM service (`SashaDiscordBot`) and handles:
+- Pinging Erin when a new teach-intent is detected
+- ✅ Yes / ❌ No approval buttons on pending knowledge entries
+- Slash commands: `/knowledge-list`, `/knowledge-add`, `/knowledge-delete`, `/knowledge-toggle`, `/pending-list`, `/pending-approve`, `/pending-deny`
+
+```powershell
+# Run manually (for testing)
+python discord_bot.py
+
+# Or manage via NSSM
+nssm start SashaDiscordBot
+nssm restart SashaDiscordBot
+```
+
+Logs: `logs/discord_bot.log` and `logs/discord_bot_err.log`

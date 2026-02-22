@@ -1,15 +1,17 @@
 # Sasha-AI
 
-**Sasha** is a personal AI chatbot built to represent Erin Skidds. It lives on Erin's portfolio so that visitors can have a conversation with it as if they were talking directly to Erin — asking about her background, projects, tech stack, personality, and anything else they'd want to know before reaching out.
+**Sasha** is a personal AI chatbot built to represent Erin Skidds. It lives on Erin's portfolio so visitors can ask about her background, projects, tech stack, and experience. Sasha is also a long-term digital heirloom — a way for Erin's future family to learn about her.
 
 ---
 
 ## What It Does
 
-- **Talks like Erin** — trained on real Q&A conversation pairs written in Erin's voice, covering her experience, opinions, hobbies, and work
-- **Learns over time** — every conversation is collected and used to automatically retrain the model, so Sasha gets better the more people interact with it
-- **Lives on the portfolio** — embedded at `chat.erinskidds.com`, accessible to anyone visiting Erin's portfolio without needing an account
-- **Runs locally** — the backend runs on Erin's home PC and is exposed to the internet via a Cloudflare Tunnel (no cloud GPU costs)
+- **Answers questions about Erin** — powered by a local Ollama model with a dynamic knowledge base stored in SQLite
+- **Learns with approval** — when someone tries to teach Sasha something new, it goes into a pending queue and pings Erin on Discord for approval before being added
+- **Tracks what people ask** — all conversations are logged so Erin can see what visitors are curious about
+- **Managed via Discord** — slash commands let Erin add, edit, enable/disable, and approve knowledge entries directly from Discord
+- **Admin UI** — web-based admin panel at `chat.erinskidds.com/admin` for full knowledge base management
+- **Runs locally** — backend runs on Erin's home PC, exposed via Cloudflare Tunnel (no cloud costs)
 
 ---
 
@@ -17,32 +19,26 @@
 
 ```
 frontend/          Next.js 14 + TypeScript + Tailwind CSS
-                   Full chat UI with sidebar, dark mode, auth flow
+                   Full chat UI with sidebar, dark mode, chat history
+                   Admin panel for knowledge base management
 
 backend/           Python + FastAPI
-                   Model inference, training pipeline, conversation collection
-                   SQLite database for user management
-                   DialoGPT-medium fine-tuned on Erin-specific training data
+                   Ollama API wrapper (qwen2.5-coder:7b)
+                   SQLite DB: Knowledge, PendingKnowledge, User tables
+                   Discord bot with approval workflow (discord.py)
+                   Internal HTTP notify server on port 8001
 ```
 
-**Public URLs (when live):**
-- Frontend: `https://chat.erinskidds.com`
+**Live URLs:**
+- Chat frontend: `https://chat.erinskidds.com`
 - Backend API: `https://api.erinskidds.com`
+- Portfolio widget: `https://erinskidds.com`
 
----
-
-## Project Status
-
-| Area | Status |
-|------|--------|
-| Frontend UI (chat, auth, sidebar, dark mode) | ✅ Complete |
-| Backend API (FastAPI, auth, endpoints) | ✅ Scaffolded — has 2 bugs to fix (see `.tasks/TODO.md`) |
-| Training pipeline (SashaTrainer, auto-retrain) | ✅ Built |
-| Erin-specific training data | ❌ Not written yet — generic placeholder data only |
-| Initial model training | ❌ Not run yet |
-| Public chat (no login required for visitors) | ❌ Currently requires auth — needs to be removed for portfolio use |
-| Hosting / Cloudflare Tunnel | ❌ Not configured yet |
-| Portfolio embed | ❌ Not done yet |
+**Windows Services (NSSM):**
+- `SashaBackend` — FastAPI on port 8000
+- `SashaFrontend` — Next.js on port 3001
+- `SashaDiscordBot` — Discord bot + notify server on port 8001
+- `OllamaService` — Ollama on port 11434
 
 ---
 
@@ -52,8 +48,16 @@ backend/           Python + FastAPI
 ```powershell
 cd backend
 pip install -r requirements.txt
+# Copy .env.example to .env and fill in values
 python main.py
 # API runs at http://localhost:8000
+```
+
+### Discord Bot
+```powershell
+cd backend
+python discord_bot.py
+# Requires DISCORD_BOT_TOKEN, DISCORD_GUILD_ID, DISCORD_CHANNEL_ID, DISCORD_OWNER_ID in .env
 ```
 
 ### Frontend
@@ -66,23 +70,15 @@ npm run dev
 
 ---
 
-## Task Tracking
-
-See `.tasks/` for detailed task lists:
-
-- **`.tasks/TODO.md`** — Full breakdown of what's done, what's broken, and what needs to happen next (in priority order)
-- **`.tasks/HOSTING.md`** — Step-by-step guide to exposing the local backend to the internet via Cloudflare Tunnel and deploying the frontend to Vercel
-
----
-
 ## Tech Stack
 
 | Layer | Technology |
 |-------|-----------|
 | Frontend | Next.js 14, TypeScript, Tailwind CSS |
 | Backend | Python, FastAPI, Uvicorn |
-| AI Model | DialoGPT-medium (Hugging Face Transformers) |
+| AI Model | Ollama (qwen2.5-coder:7b) |
 | Database | SQLite via SQLAlchemy |
+| Discord Bot | discord.py, aiohttp |
 | Auth | JWT (python-jose + bcrypt) |
 | Tunnel | Cloudflare Tunnel (cloudflared) |
-| Hosting | Vercel (frontend) + Home PC (backend) |
+| Services | NSSM (Windows service manager) |

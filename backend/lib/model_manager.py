@@ -5,6 +5,7 @@ Handles generating responses via the local Ollama API
 
 import httpx
 from config.app_config import config
+from lib.knowledge_manager import get_system_prompt
 
 
 class ModelManager:
@@ -12,7 +13,6 @@ class ModelManager:
         self.use_trained_model = True  # Ollama is always "ready"
         self.ollama_url = config.OLLAMA_URL
         self.ollama_model = config.OLLAMA_MODEL
-        self.system_prompt = config.SYSTEM_PROMPT
 
     def load_model(self, model_path: str = None):
         """Check that Ollama is reachable"""
@@ -32,7 +32,7 @@ class ModelManager:
 
     def generate_response(self, user_message: str, conversation_history: list = None, system_prompt_override: str = None) -> str:
         """Generate a response via the Ollama API"""
-        prompt = system_prompt_override if system_prompt_override else self.system_prompt
+        prompt = system_prompt_override if system_prompt_override else get_system_prompt()
         messages = [{"role": "system", "content": prompt}]
 
         if conversation_history:
@@ -57,10 +57,10 @@ class ModelManager:
             response.raise_for_status()
             return response.json()["message"]["content"].strip()
         except httpx.TimeoutException:
-            return "Sorry, I'm taking a bit long to think. Try again in a moment!"
+            return "SASHA_OFFLINE"
         except Exception as e:
             print(f"Error calling Ollama: {e}")
-            return "Sorry, I'm having trouble responding right now. Please try again!"
+            return "SASHA_OFFLINE"
 
     def get_status(self) -> dict:
         """Get current model status"""

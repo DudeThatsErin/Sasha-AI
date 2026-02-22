@@ -119,10 +119,10 @@ export default function Sidebar({
       {/* Sidebar */}
       <nav 
         className={`
-          fixed inset-y-0 left-0 z-50 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-700 transition-all duration-300 ease-in-out
+          fixed inset-y-0 left-0 z-50 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-700 transition-all duration-300 ease-in-out flex flex-col
           ${isOpen ? 'translate-x-0' : '-translate-x-full'}
           ${isCollapsed ? 'w-16' : 'w-80'}
-          lg:relative lg:translate-x-0
+          lg:relative lg:translate-x-0 lg:h-full
         `}
         role="navigation"
         aria-label="Chat navigation"

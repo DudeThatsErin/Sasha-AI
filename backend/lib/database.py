@@ -2,7 +2,7 @@
 Database models and connection for Sasha AI
 """
 
-from sqlalchemy import create_engine, Column, Integer, String, DateTime, Boolean
+from sqlalchemy import create_engine, Column, Integer, String, DateTime, Boolean, Text
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from datetime import datetime
@@ -28,6 +28,31 @@ class User(Base):
     is_admin = Column(Boolean, default=False)
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+class Knowledge(Base):
+    __tablename__ = "knowledge"
+
+    id = Column(Integer, primary_key=True, index=True)
+    category = Column(String, nullable=False, index=True)
+    content = Column(Text, nullable=False)
+    is_active = Column(Boolean, default=True)
+    sort_order = Column(Integer, default=0)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+
+class PendingKnowledge(Base):
+    __tablename__ = "pending_knowledge"
+
+    id = Column(Integer, primary_key=True, index=True)
+    category = Column(String, nullable=False, default="GENERAL")
+    content = Column(Text, nullable=False)
+    proposed_by_chat_id = Column(String, nullable=True)
+    discord_message_id = Column(String, nullable=True)
+    status = Column(String, default="pending")  # "pending", "approved", "denied"
+    created_at = Column(DateTime, default=datetime.utcnow)
+    reviewed_at = Column(DateTime, nullable=True)
+
 
 def create_tables():
     """Create all database tables"""

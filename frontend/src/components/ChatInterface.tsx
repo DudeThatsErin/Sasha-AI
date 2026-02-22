@@ -18,6 +18,7 @@ export default function ChatInterface() {
   const [inputValue, setInputValue] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)
+  const messagesContainerRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
   const { theme, setTheme } = useTheme()
   const [toast, setToast] = useState<{ message: string; type: 'info' | 'success' | 'warning' | 'error' } | null>(null)
@@ -159,7 +160,9 @@ export default function ChatInterface() {
   }
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+    if (messagesContainerRef.current) {
+      messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight
+    }
   }
 
   const showToast = (message: string, type: 'info' | 'success' | 'warning' | 'error' = 'info') => {
@@ -224,7 +227,10 @@ export default function ChatInterface() {
       }
 
       const data = await response.json()
-      const aiMessage = await db.addMessage(currentChat.id, data.response, 'sasha')
+      const responseText = data.response === 'SASHA_OFFLINE'
+        ? "Sorry, I'm offline right now. You can reach Erin directly on: [LinkedIn](https://linkedin.com/in/erinskidds) \u00b7 [GitHub](https://github.com/DudeThatsErin)"
+        : data.response
+      const aiMessage = await db.addMessage(currentChat.id, responseText, 'sasha')
       setMessages(prev => [...prev, aiMessage])
 
       // Announce AI response to screen readers
@@ -284,7 +290,7 @@ export default function ChatInterface() {
   }
 
   return (
-    <div className="flex h-screen bg-white dark:bg-gray-900" onKeyDown={handleKeyDown}>
+    <div className="flex h-dvh max-h-dvh overflow-hidden bg-white dark:bg-gray-900" onKeyDown={handleKeyDown}>
       {/* Skip Link for Keyboard Navigation */}
       <a
         href="#message-input"
@@ -312,7 +318,7 @@ export default function ChatInterface() {
       />
 
       {/* Main Chat Area */}
-      <div className="flex-1 flex flex-col">
+      <div className="flex-1 flex flex-col min-h-0 overflow-hidden">
         {/* Header */}
         <header className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
           <div className="flex items-center gap-3">
@@ -352,7 +358,8 @@ export default function ChatInterface() {
 
         {/* Messages Area */}
         <main 
-          className="flex-1 overflow-y-auto"
+          ref={messagesContainerRef}
+          className="flex-1 overflow-y-auto min-h-0"
           role="main"
           aria-label="Chat conversation"
         >

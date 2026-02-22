@@ -2,6 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+  overflow: hidden !important;
+  height: 100dvh !important;
+}
+
+body {
+  overflow: hidden !important;
+  height: 100dvh !important;
+  margin: 0;
+  padding: 0;
+}
+
 /* Accessibility utilities */
 @layer utilities {
   .sr-only {

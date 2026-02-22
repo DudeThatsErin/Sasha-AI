@@ -35,6 +35,14 @@ class Config:
     except FileNotFoundError:
         SYSTEM_PROMPT = "You are Sasha, an AI assistant representing Erin Skidds."
 
+    # Discord bot settings
+    DISCORD_BOT_TOKEN = os.getenv("DISCORD_BOT_TOKEN", "")
+    DISCORD_GUILD_ID = int(os.getenv("DISCORD_GUILD_ID", "0"))
+    DISCORD_CHANNEL_ID = int(os.getenv("DISCORD_CHANNEL_ID", "0"))
+    DISCORD_OWNER_ID = int(os.getenv("DISCORD_OWNER_ID", "0"))
+    # Internal URL the Discord bot uses to call the FastAPI backend
+    BACKEND_INTERNAL_URL = os.getenv("BACKEND_INTERNAL_URL", "http://127.0.0.1:8000")
+
     # Conversation collection (for reviewing what people ask)
     COLLECTED_CONVERSATIONS_FILE = "./config/collected_conversations.json"
 

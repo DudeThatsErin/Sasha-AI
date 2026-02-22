@@ -1,0 +1,283 @@
+"""
+Sasha AI - Discord Bot
+Handles knowledge approval requests and DB management via Discord.
+Run this as a separate process alongside the FastAPI backend.
+"""
+
+import asyncio
+import os
+import sys
+import httpx
+import discord
+from discord import app_commands
+from discord.ext import commands
+from aiohttp import web
+
+# Load .env manually (no python-dotenv required)
+_env_path = os.path.join(os.path.dirname(__file__), ".env")
+if os.path.exists(_env_path):
+    with open(_env_path) as f:
+        for line in f:
+            line = line.strip()
+            if line and not line.startswith("#") and "=" in line:
+                k, v = line.split("=", 1)
+                os.environ.setdefault(k.strip(), v.strip())
+
+BOT_TOKEN = os.environ.get("DISCORD_BOT_TOKEN", "")
+GUILD_ID = int(os.environ.get("DISCORD_GUILD_ID", "0"))
+CHANNEL_ID = int(os.environ.get("DISCORD_CHANNEL_ID", "0"))
+OWNER_ID = int(os.environ.get("DISCORD_OWNER_ID", "0"))
+BACKEND_URL = os.environ.get("BACKEND_INTERNAL_URL", "http://127.0.0.1:8000")
+NOTIFY_PORT = int(os.environ.get("DISCORD_NOTIFY_PORT", "8001"))
+
+if not BOT_TOKEN:
+    print("ERROR: DISCORD_BOT_TOKEN not set in .env")
+    sys.exit(1)
+
+# ── Discord client setup ──────────────────────────────────────────────────────
+
+intents = discord.Intents.default()
+intents.message_content = True
+bot = commands.Bot(command_prefix="!", intents=intents)
+tree = bot.tree
+
+
+# ── Approval button view ──────────────────────────────────────────────────────
+
+class ApprovalView(discord.ui.View):
+    def __init__(self, pending_id: int):
+        super().__init__(timeout=None)
+        self.pending_id = pending_id
+
+    @discord.ui.button(label="✅ Yes, learn it", style=discord.ButtonStyle.success, custom_id="approve")
+    async def approve(self, interaction: discord.Interaction, button: discord.ui.Button):
+        await interaction.response.defer()
+        async with httpx.AsyncClient(timeout=10) as client:
+            r = await client.post(f"{BACKEND_URL}/pending-knowledge/{self.pending_id}/approve")
+        if r.status_code == 200:
+            await interaction.edit_original_response(
+                content=interaction.message.content + "\n\n✅ **Approved!** Sasha will now know this.",
+                view=None,
+            )
+        else:
+            await interaction.followup.send(f"⚠️ Backend error: {r.text}", ephemeral=True)
+
+    @discord.ui.button(label="❌ No, ignore it", style=discord.ButtonStyle.danger, custom_id="deny")
+    async def deny(self, interaction: discord.Interaction, button: discord.ui.Button):
+        await interaction.response.defer()
+        async with httpx.AsyncClient(timeout=10) as client:
+            r = await client.post(f"{BACKEND_URL}/pending-knowledge/{self.pending_id}/deny")
+        if r.status_code == 200:
+            await interaction.edit_original_response(
+                content=interaction.message.content + "\n\n❌ **Denied.** Sasha won't learn this.",
+                view=None,
+            )
+        else:
+            await interaction.followup.send(f"⚠️ Backend error: {r.text}", ephemeral=True)
+
+
+# ── Internal HTTP server (receives notify calls from FastAPI) ─────────────────
+
+async def handle_notify(request: web.Request) -> web.Response:
+    """FastAPI calls POST /notify-pending → bot sends Discord message."""
+    try:
+        data = await request.json()
+        pending_id = data["pending_id"]
+        content = data["content"]
+
+        channel = bot.get_channel(CHANNEL_ID)
+        if channel is None:
+            return web.json_response({"error": "Channel not found"}, status=500)
+
+        owner_mention = f"<@{OWNER_ID}>" if OWNER_ID else "Erin"
+        msg = await channel.send(
+            f"{owner_mention} 🤔 Someone wants Sasha to learn something new:\n\n"
+            f"> **{content}**\n\n"
+            f"Should Sasha learn this?",
+            view=ApprovalView(pending_id),
+        )
+        return web.json_response({"discord_message_id": str(msg.id)})
+    except Exception as e:
+        print(f"Notify handler error: {e}")
+        return web.json_response({"error": str(e)}, status=500)
+
+
+async def handle_widget_notify(request: web.Request) -> web.Response:
+    """FastAPI calls POST /notify-widget → bot sends a brief Discord message."""
+    try:
+        data = await request.json()
+        message = data.get("message", "(unknown)")
+        chat_id = data.get("chat_id", "unknown")
+
+        channel = bot.get_channel(CHANNEL_ID)
+        if channel is None:
+            return web.json_response({"error": "Channel not found"}, status=500)
+
+        await channel.send(
+            f"💬 **Widget used!** Someone asked Sasha:\n> {message[:300]}"
+        )
+        return web.json_response({"ok": True})
+    except Exception as e:
+        print(f"Widget notify handler error: {e}")
+        return web.json_response({"error": str(e)}, status=500)
+
+
+async def start_notify_server():
+    app = web.Application()
+    app.router.add_post("/notify-pending", handle_notify)
+    app.router.add_post("/notify-widget", handle_widget_notify)
+    runner = web.AppRunner(app)
+    await runner.setup()
+    site = web.TCPSite(runner, "127.0.0.1", NOTIFY_PORT)
+    await site.start()
+    print(f"Discord notify server listening on http://127.0.0.1:{NOTIFY_PORT}")
+
+
+# ── Slash commands ────────────────────────────────────────────────────────────
+
+@tree.command(name="knowledge-list", description="List Sasha's knowledge entries", guilds=[discord.Object(id=GUILD_ID)])
+async def knowledge_list(interaction: discord.Interaction, category: str = "ALL"):
+    await interaction.response.defer(ephemeral=True)
+    async with httpx.AsyncClient(timeout=10) as client:
+        r = await client.get(f"{BACKEND_URL}/knowledge")
+    if r.status_code != 200:
+        await interaction.followup.send("⚠️ Could not reach backend.", ephemeral=True)
+        return
+
+    entries = r.json()
+    if category != "ALL":
+        entries = [e for e in entries if e["category"].upper() == category.upper()]
+
+    if not entries:
+        await interaction.followup.send("No entries found.", ephemeral=True)
+        return
+
+    # Group by category
+    grouped: dict[str, list] = {}
+    for e in entries:
+        grouped.setdefault(e["category"], []).append(e)
+
+    lines = []
+    for cat, items in grouped.items():
+        lines.append(f"**{cat}**")
+        for item in items:
+            status = "✓" if item["is_active"] else "○"
+            lines.append(f"  `{item['id']}` {status} {item['content'][:80]}")
+        lines.append("")
+
+    text = "\n".join(lines)
+    # Discord message limit is 2000 chars
+    if len(text) > 1900:
+        text = text[:1900] + f"\n…(truncated) — [View full list](<https://chat.erinskidds.com/admin>)"
+
+    await interaction.followup.send(text, ephemeral=True)
+
+
+@tree.command(name="knowledge-add", description="Add a new knowledge entry for Sasha", guilds=[discord.Object(id=GUILD_ID)])
+@app_commands.describe(category="Category (e.g. TECH STACK)", content="The fact to add")
+async def knowledge_add(interaction: discord.Interaction, category: str, content: str):
+    await interaction.response.defer(ephemeral=True)
+    async with httpx.AsyncClient(timeout=10) as client:
+        r = await client.post(
+            f"{BACKEND_URL}/knowledge",
+            json={"category": category.upper(), "content": content, "sort_order": 0},
+        )
+    if r.status_code == 201:
+        data = r.json()
+        await interaction.followup.send(
+            f"✅ Added entry `{data['id']}` under **{data['category']}**:\n> {data['content']}",
+            ephemeral=True,
+        )
+    else:
+        await interaction.followup.send(f"⚠️ Error: {r.text}", ephemeral=True)
+
+
+@tree.command(name="knowledge-delete", description="Delete a knowledge entry by ID", guilds=[discord.Object(id=GUILD_ID)])
+@app_commands.describe(entry_id="The numeric ID of the entry to delete")
+async def knowledge_delete(interaction: discord.Interaction, entry_id: int):
+    await interaction.response.defer(ephemeral=True)
+    async with httpx.AsyncClient(timeout=10) as client:
+        r = await client.delete(f"{BACKEND_URL}/knowledge/{entry_id}")
+    if r.status_code == 200:
+        await interaction.followup.send(f"🗑️ Entry `{entry_id}` deleted.", ephemeral=True)
+    else:
+        await interaction.followup.send(f"⚠️ Error: {r.text}", ephemeral=True)
+
+
+@tree.command(name="knowledge-toggle", description="Enable or disable a knowledge entry", guilds=[discord.Object(id=GUILD_ID)])
+@app_commands.describe(entry_id="The numeric ID of the entry", active="True to enable, False to disable")
+async def knowledge_toggle(interaction: discord.Interaction, entry_id: int, active: bool):
+    await interaction.response.defer(ephemeral=True)
+    async with httpx.AsyncClient(timeout=10) as client:
+        r = await client.put(
+            f"{BACKEND_URL}/knowledge/{entry_id}",
+            json={"is_active": active},
+        )
+    if r.status_code == 200:
+        state = "enabled ✅" if active else "disabled ○"
+        await interaction.followup.send(f"Entry `{entry_id}` is now {state}.", ephemeral=True)
+    else:
+        await interaction.followup.send(f"⚠️ Error: {r.text}", ephemeral=True)
+
+
+@tree.command(name="pending-list", description="List pending knowledge awaiting approval", guilds=[discord.Object(id=GUILD_ID)])
+async def pending_list(interaction: discord.Interaction):
+    await interaction.response.defer(ephemeral=True)
+    async with httpx.AsyncClient(timeout=10) as client:
+        r = await client.get(f"{BACKEND_URL}/pending-knowledge")
+    if r.status_code != 200:
+        await interaction.followup.send("⚠️ Could not reach backend.", ephemeral=True)
+        return
+
+    entries = [e for e in r.json() if e["status"] == "pending"]
+    if not entries:
+        await interaction.followup.send("No pending entries.", ephemeral=True)
+        return
+
+    lines = ["**Pending Knowledge Requests:**"]
+    for e in entries:
+        lines.append(f"`{e['id']}` — {e['content'][:100]}")
+
+    await interaction.followup.send("\n".join(lines), ephemeral=True)
+
+
+@tree.command(name="pending-approve", description="Approve a pending knowledge entry by ID", guilds=[discord.Object(id=GUILD_ID)])
+@app_commands.describe(entry_id="The numeric ID of the pending entry")
+async def pending_approve(interaction: discord.Interaction, entry_id: int):
+    await interaction.response.defer(ephemeral=True)
+    async with httpx.AsyncClient(timeout=10) as client:
+        r = await client.post(f"{BACKEND_URL}/pending-knowledge/{entry_id}/approve")
+    if r.status_code == 200:
+        await interaction.followup.send(f"✅ Entry `{entry_id}` approved and added to knowledge base.", ephemeral=True)
+    else:
+        await interaction.followup.send(f"⚠️ Error: {r.text}", ephemeral=True)
+
+
+@tree.command(name="pending-deny", description="Deny a pending knowledge entry by ID", guilds=[discord.Object(id=GUILD_ID)])
+@app_commands.describe(entry_id="The numeric ID of the pending entry")
+async def pending_deny(interaction: discord.Interaction, entry_id: int):
+    await interaction.response.defer(ephemeral=True)
+    async with httpx.AsyncClient(timeout=10) as client:
+        r = await client.post(f"{BACKEND_URL}/pending-knowledge/{entry_id}/deny")
+    if r.status_code == 200:
+        await interaction.followup.send(f"❌ Entry `{entry_id}` denied.", ephemeral=True)
+    else:
+        await interaction.followup.send(f"⚠️ Error: {r.text}", ephemeral=True)
+
+
+# ── Bot events ────────────────────────────────────────────────────────────────
+
+@bot.event
+async def on_ready():
+    print(f"Sasha Discord bot logged in as {bot.user} (ID: {bot.user.id})")
+    await start_notify_server()
+    guild = discord.Object(id=GUILD_ID)
+    tree.copy_global_to(guild=guild)
+    await tree.sync(guild=guild)
+    print(f"Slash commands synced to guild {GUILD_ID}")
+
+
+# ── Entry point ───────────────────────────────────────────────────────────────
+
+if __name__ == "__main__":
+    bot.run(BOT_TOKEN)
