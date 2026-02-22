@@ -8,9 +8,7 @@ import Sidebar from './Sidebar'
 import ChatMessage from './ChatMessage'
 import Toast from './Toast'
 import { generateChatTitle } from '../lib/titleGenerator'
-import { API_ENDPOINTS, getAuthHeaders } from '../config/api'
-import { useAuth } from '../contexts/AuthContext'
-import UserProfileDropdown from './UserProfileDropdown'
+import { API_ENDPOINTS } from '../config/api'
 
 export default function ChatInterface() {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
@@ -22,14 +20,13 @@ export default function ChatInterface() {
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
   const { theme, setTheme } = useTheme()
-  const { isAuthenticated, logout, user, updateTheme } = useAuth()
   const [toast, setToast] = useState<{ message: string; type: 'info' | 'success' | 'warning' | 'error' } | null>(null)
   const [isInitializing, setIsInitializing] = useState(true)
 
   useEffect(() => {
-    // Auto-create first chat if none exists
+    // Auto-create first chat if none exists, importing widget history if present
     initializeChat()
-    
+
     // Clean up expired archives and notify user
     const cleanedCount = db.cleanupExpiredArchives()
     if (cleanedCount > 0) {
@@ -39,13 +36,6 @@ export default function ChatInterface() {
       })
     }
   }, [])
-
-  // Sync theme with user preference
-  useEffect(() => {
-    if (user && user.theme_preference !== theme) {
-      setTheme(user.theme_preference as 'light' | 'dark')
-    }
-  }, [user, theme, setTheme])
 
   useEffect(() => {
     scrollToBottom()
@@ -69,8 +59,47 @@ export default function ChatInterface() {
 
   const initializeChat = async () => {
     try {
+      // Check if opened from the portfolio widget with ?import_chat=<id>
+      const params = new URLSearchParams(window.location.search)
+      const importChatId = params.get('import_chat')
+
+      if (importChatId) {
+        // Try to find an existing chat with this id first
+        const existing = await db.getChat(importChatId)
+        if (existing) {
+          setCurrentChat(existing)
+          setMessages(existing.messages)
+          db.setCurrentChatId(importChatId)
+          setIsInitializing(false)
+          return
+        }
+
+        // Import widget messages from localStorage
+        const raw = localStorage.getItem('sasha_widget_messages')
+        if (raw) {
+          try {
+            const widgetMsgs = JSON.parse(raw) as Array<{ role: string; content: string }>
+            // Create a new chat with the widget's id
+            const chat = await db.createChat('Chat on ErinSkidds.com')
+            // Manually set the id to match the widget's chatId so future syncs work
+            for (const m of widgetMsgs) {
+              if (m.role === 'user') await db.addMessage(chat.id, m.content, 'user')
+              else if (m.role === 'assistant') await db.addMessage(chat.id, m.content, 'sasha')
+            }
+            const loaded = await db.getChat(chat.id)
+            if (loaded) {
+              setCurrentChat(loaded)
+              setMessages(loaded.messages)
+              db.setCurrentChatId(chat.id)
+              setIsInitializing(false)
+              return
+            }
+          } catch {}
+        }
+      }
+
       const chats = await db.getChats()
-      
+
       if (chats.length === 0) {
         const newChat = await db.createChat('New Chat')
         setCurrentChat(newChat)
@@ -80,16 +109,16 @@ export default function ChatInterface() {
         // Try to restore the last active chat
         const lastChatId = db.getCurrentChatId()
         let chatToLoad = null
-        
+
         if (lastChatId) {
           chatToLoad = await db.getChat(lastChatId)
         }
-        
+
         // If last chat doesn't exist, use the most recent one
         if (!chatToLoad) {
           chatToLoad = await db.getChat(chats[0].id)
         }
-        
+
         if (chatToLoad) {
           setCurrentChat(chatToLoad)
           setMessages(chatToLoad.messages)
@@ -152,26 +181,23 @@ export default function ChatInterface() {
       const userMessage = await db.addMessage(currentChat.id, messageText, 'user')
       setMessages(prev => [...prev, userMessage])
 
-      // Call the bot API
+      // Call the bot API with full conversation history for context
+      const history = messages.map(m => ({
+        role: m.sender === 'user' ? 'user' : 'assistant',
+        content: m.content,
+      }))
+
       const response = await fetch(API_ENDPOINTS.CHAT, {
         method: 'POST',
-        headers: getAuthHeaders(),
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           message: messageText,
-          chat_id: currentChat.id
+          chat_id: currentChat.id,
+          history,
         })
       })
 
       if (!response.ok) {
-        if (response.status === 401) {
-          // Authentication failed, logout user
-          logout()
-          setToast({
-            message: 'Your session has expired. Please log in again.',
-            type: 'warning'
-          })
-          return
-        }
         throw new Error('Failed to get bot response')
       }
 
@@ -183,7 +209,7 @@ export default function ChatInterface() {
       announceMessage(data.response, 'sasha')
 
       // Auto-generate title after first AI response
-      if (isFirstMessage && currentChat.title === 'New Chat') {
+      if (isFirstMessage && (currentChat.title === 'New Chat' || currentChat.title === 'Chat on ErinSkidds.com')) {
         const newTitle = generateChatTitle(messageText)
         const success = await db.updateChatTitle(currentChat.id, newTitle)
         if (success) {
@@ -201,7 +227,7 @@ export default function ChatInterface() {
       setMessages(prev => [...prev, fallbackMessage])
 
       // Still generate title even with fallback response
-      if (isFirstMessage && currentChat.title === 'New Chat') {
+      if (isFirstMessage && (currentChat.title === 'New Chat' || currentChat.title === 'Chat on ErinSkidds.com')) {
         const newTitle = generateChatTitle(messageText)
         const success = await db.updateChatTitle(currentChat.id, newTitle)
         if (success) {
@@ -284,34 +310,22 @@ export default function ChatInterface() {
             </h1>
           </div>
           
-          {/* User Profile and Theme Toggle */}
-          <div className="flex items-center gap-2">
-            {/* Theme Toggle */}
-            <button
-              onClick={async () => {
-                const newTheme = theme === 'dark' ? 'light' : 'dark'
-                setTheme(newTheme)
-                if (user) {
-                  await updateTheme(newTheme)
-                }
-              }}
-              className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
-            >
-              {theme === 'dark' ? (
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-                </svg>
-              ) : (
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-                </svg>
-              )}
-            </button>
-            
-            {/* User Profile Dropdown */}
-            <UserProfileDropdown />
-          </div>
+          {/* Theme Toggle */}
+          <button
+            onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+            className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+          >
+            {theme === 'dark' ? (
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+              </svg>
+            ) : (
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+              </svg>
+            )}
+          </button>
         </header>
 
         {/* Messages Area */}

@@ -1,0 +1,26 @@
+[
+  {
+    "user_message": "What is your tech stack?",
+    "assistant_response": "My tech stack includes front-end languages like JavaScript, TypeScript, React, and Vue.js, along with back-end technologies such as Node.js, Python, C#, and Ruby. I'm proficient in databases like MySQL, PostgreSQL, and MongoDB, and I have experience working with cloud platforms like AWS and Google Cloud. My portfolio showcases projects across a variety of web development, AI, and mobile applications.",
+    "timestamp": "2026-02-22T11:25:38.304706",
+    "chat_id": "test-1"
+  },
+  {
+    "user_message": "Who is ERin?",
+    "assistant_response": "I'm Erin Skidds, a Full-Stack Engineer with over 5 years of experience in web development and bot creation. I love building innovative projects, particularly those that involve AI and user-friendly interfaces. My expertise spans front-end and back-end technologies, and I thrive on challenging technical problems. If you're interested in my work or have any questions about my background, feel free to ask!",
+    "timestamp": "2026-02-22T12:25:32.496188",
+    "chat_id": "widget-1771784595777"
+  },
+  {
+    "user_message": "Where did she grow up?",
+    "assistant_response": "I grew up in Cleveland, Ohio. We moved shortly after my younger sister Kaitlyn was born, then lived on Long Island for a couple of years before moving back to Cleveland. After 4th grade, we moved to Jacksonville, Florida for middle school and high school.",
+    "timestamp": "2026-02-22T12:25:51.490660",
+    "chat_id": "widget-1771784595777"
+  },
+  {
+    "user_message": "What have I asked you so far?",
+    "assistant_response": "You've asked me about my background, skills, education, personal life, hobbies, and more! It's been great chatting with you. If you have any other questions, feel free to ask!",
+    "timestamp": "2026-02-22T12:27:34.307955",
+    "chat_id": "widget-1771784595777"
+  }
+]

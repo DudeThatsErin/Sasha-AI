@@ -2,6 +2,7 @@
 Authentication utilities for Sasha AI
 """
 
+import os
 import bcrypt
 from datetime import datetime, timedelta
 from typing import Optional
@@ -10,7 +11,7 @@ from sqlalchemy.orm import Session
 from .database import User
 
 # JWT Configuration
-SECRET_KEY = "sasha-ai-secret-key-change-in-production"  # Change this in production
+SECRET_KEY = os.getenv("SECRET_KEY", "dev-only-fallback-change-before-going-public")
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
@@ -99,6 +100,7 @@ def create_default_admin(db: Session):
     """Create default admin user if it doesn't exist"""
     admin_user = get_user_by_username(db, "admin")
     if not admin_user:
-        create_user(db, "admin", "Administrator", "admin123", is_admin=True)
-        print("Default admin user created: username='admin', name='Administrator', password='admin123'")
+        admin_password = os.getenv("ADMIN_PASSWORD", "admin123")
+        create_user(db, "admin", "Administrator", admin_password, is_admin=True)
+        print(f"Default admin user created: username='admin', password={'(from ADMIN_PASSWORD env var)' if os.getenv('ADMIN_PASSWORD') else 'admin123 (default — set ADMIN_PASSWORD env var)'}")
         print("Please change the default password after first login!")

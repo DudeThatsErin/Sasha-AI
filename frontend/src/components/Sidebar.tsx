@@ -126,7 +126,7 @@ export default function Sidebar({
         `}
         role="navigation"
         aria-label="Chat navigation"
-        aria-hidden={!isOpen && window.innerWidth < 1024}
+        aria-hidden={!isOpen && (typeof window !== 'undefined' ? window.innerWidth < 1024 : true)}
       >
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">

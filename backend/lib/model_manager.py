@@ -30,9 +30,10 @@ class ModelManager:
             print(f"WARNING: Could not reach Ollama at {self.ollama_url}: {e}")
             print("Make sure Ollama is running: ollama serve")
 
-    def generate_response(self, user_message: str, conversation_history: list = None) -> str:
+    def generate_response(self, user_message: str, conversation_history: list = None, system_prompt_override: str = None) -> str:
         """Generate a response via the Ollama API"""
-        messages = [{"role": "system", "content": self.system_prompt}]
+        prompt = system_prompt_override if system_prompt_override else self.system_prompt
+        messages = [{"role": "system", "content": prompt}]
 
         if conversation_history:
             messages.extend(conversation_history)

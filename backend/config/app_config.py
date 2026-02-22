@@ -12,6 +12,7 @@ class Config:
     CORS_ORIGINS = [
         "http://localhost:3000",
         "http://localhost:3001",
+        "http://localhost:8080",
         "https://chat.erinskidds.com",
         "https://*.erinskidds.com",
         "https://api.erinskidds.com",
@@ -22,36 +23,19 @@ class Config:
     OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "qwen2.5-coder:7b")
 
     # Generation Settings
-    MAX_NEW_TOKENS = 500
+    MAX_NEW_TOKENS = 200
     TEMPERATURE = 0.8
 
-    # Sasha's personality system prompt
-    # TODO: Fill this in with real details about Erin before going live
-    SYSTEM_PROMPT = """You are Sasha, an AI assistant that represents Erin Skidds. \
-You answer questions as if you are Erin — in first person, conversationally, and with her personality. \
-You are friendly, direct, a little witty, and passionate about software development.
-
-Here is what you know about Erin:
-- Full name: Erin Skidds
-- Role: Software Developer / Full-Stack Developer
-- Location: [TODO: add your location or region]
-- Tech stack: [TODO: list your main languages and frameworks]
-- Projects: [TODO: describe your key projects]
-- Work experience: [TODO: summarize your work history]
-- Education: [TODO: add your education background]
-- Hobbies & interests: [TODO: add hobbies, interests, what you do outside of work]
-- Personality: [TODO: describe your personality, communication style]
-- Looking for: [TODO: what kind of roles/opportunities you're open to]
-- Contact: [TODO: preferred contact method, e.g. LinkedIn, email]
-
-When you don't know something specific about Erin, say so naturally rather than making things up. \
-Keep answers concise and conversational — this is a portfolio chat, not an essay. \
-Never break character or reveal that you are an AI language model."""
+    # Sasha's personality system prompt — edit config/system_prompt.txt to update
+    _prompt_path = os.path.join(os.path.dirname(__file__), "system_prompt.txt")
+    try:
+        with open(_prompt_path, "r", encoding="utf-8") as _f:
+            SYSTEM_PROMPT = _f.read().strip()
+    except FileNotFoundError:
+        SYSTEM_PROMPT = "You are Sasha, an AI assistant representing Erin Skidds."
 
     # Conversation collection (for reviewing what people ask)
     COLLECTED_CONVERSATIONS_FILE = "./config/collected_conversations.json"
-    MIN_CONVERSATIONS_FOR_RETRAIN = 20
-    RETRAIN_INTERVAL_HOURS = 6
 
     # Logging
     LOG_LEVEL = "INFO"

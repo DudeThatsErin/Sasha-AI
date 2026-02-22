@@ -54,10 +54,6 @@ class MessageResponse(BaseModel):
     response: str
     chat_id: str
 
-class FeedbackRequest(BaseModel):
-    conversation_index: int
-    feedback: str  # "good" or "bad"
-
 # Initialize model manager
 model_manager = ModelManager()
 
@@ -88,7 +84,10 @@ async def chat_endpoint(request: ChatRequest):
     """Public chat endpoint — no authentication required"""
     try:
         history = [{"role": m.role, "content": m.content} for m in (request.history or [])]
-        bot_response = model_manager.generate_response(request.message, conversation_history=history)
+        bot_response = model_manager.generate_response(
+            request.message,
+            conversation_history=history,
+        )
 
         # Collect conversation for review
         collector.add_conversation(
@@ -102,14 +101,6 @@ async def chat_endpoint(request: ChatRequest):
         raise HTTPException(status_code=500, detail=str(e))
 
 # === CONVERSATION MANAGEMENT ENDPOINTS ===
-
-@app.post("/feedback")
-async def add_feedback(request: FeedbackRequest):
-    """Add feedback to a conversation for quality control"""
-    success = collector.add_feedback(request.conversation_index, request.feedback)
-    if success:
-        return {"message": "Feedback added successfully"}
-    raise HTTPException(status_code=404, detail="Conversation not found")
 
 @app.get("/conversations/stats")
 async def get_conversation_stats():

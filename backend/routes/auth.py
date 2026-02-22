@@ -9,8 +9,8 @@ from pydantic import BaseModel
 from datetime import timedelta
 from typing import Optional
 
-from ..lib.database import get_db, User
-from ..lib.auth import (
+from lib.database import get_db, User
+from lib.auth import (
     authenticate_user, 
     create_access_token, 
     verify_token, 
