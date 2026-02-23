@@ -36,7 +36,7 @@ class ModelManager:
         messages = [{"role": "system", "content": prompt}]
 
         if conversation_history:
-            messages.extend(conversation_history)
+            messages.extend(conversation_history[-20:])  # last 10 turns (user+assistant pairs)
 
         messages.append({"role": "user", "content": user_message})
 
@@ -50,6 +50,7 @@ class ModelManager:
                     "options": {
                         "temperature": config.TEMPERATURE,
                         "num_predict": config.MAX_NEW_TOKENS,
+                        "num_ctx": 4096,
                     },
                 },
                 timeout=60,

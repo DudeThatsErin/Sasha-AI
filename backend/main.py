@@ -236,12 +236,35 @@ async def _notify_discord_widget(message: str, chat_id: str) -> None:
     except Exception as e:
         print(f"Discord widget notify failed (non-fatal): {e}")
 
+_MISC_SKIP_KEYWORDS = [
+    "boston celtics", "nba", "nfl", "nhl", "mlb", "weather", "stock",
+    "recipe", "movie", "song", "capital of", "president of", "who won",
+    "what is the", "how do you", "how does", "define ", "meaning of",
+    "translate", "calculate", "math", "history of", "when was",
+]
+
+def _is_erin_related(question: str) -> bool:
+    """Return True if the question is likely about Erin rather than general knowledge."""
+    lower = question.lower()
+    for skip in _MISC_SKIP_KEYWORDS:
+        if skip in lower:
+            return False
+    erin_signals = [
+        "erin", "you", "your", "she", "her", "sasha",
+        "work", "job", "career", "project", "tech", "stack",
+        "experience", "skill", "education", "degree", "hire",
+        "contact", "reach", "portfolio", "github", "linkedin",
+    ]
+    return any(s in lower for s in erin_signals)
+
 def _store_misc_question(question: str, answer: str, db: Session) -> None:
-    """Store a visitor question in the MISC knowledge category for review."""
+    """Store visitor questions about Erin in the MISC category for review."""
+    if not _is_erin_related(question):
+        return
     try:
         entry = Knowledge(
             category="MISC",
-            content=f"Q: {question} | A: {answer[:200]}",
+            content=question.strip(),
             is_active=False,
             sort_order=999,
         )

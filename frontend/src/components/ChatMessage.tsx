@@ -1,43 +1,12 @@
 'use client'
 
+import ReactMarkdown from 'react-markdown'
 import { Message } from '../types/chat'
 
 interface ChatMessageProps {
   message: Message
   'aria-posinset'?: number
   'aria-setsize'?: number
-}
-
-function renderContent(content: string): React.ReactNode {
-  const linkRegex = /\[([^\]]+)\]\((https?:\/\/[^\)]+)\)/g
-  const parts: React.ReactNode[] = []
-  let lastIndex = 0
-  let match: RegExpExecArray | null
-
-  while ((match = linkRegex.exec(content)) !== null) {
-    if (match.index > lastIndex) {
-      parts.push(content.slice(lastIndex, match.index))
-    }
-    parts.push(
-      <a
-        key={match.index}
-        href={match[2]}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="underline font-medium hover:opacity-80"
-        aria-label={`${match[1]} (opens in new tab)`}
-      >
-        {match[1]}
-      </a>
-    )
-    lastIndex = match.index + match[0].length
-  }
-
-  if (lastIndex < content.length) {
-    parts.push(content.slice(lastIndex))
-  }
-
-  return parts.length > 0 ? parts : content
 }
 
 export default function ChatMessage({ 
@@ -82,9 +51,31 @@ export default function ChatMessage({
         }
       `}>
         <div className="sr-only">{senderName} said:</div>
-        <p className="whitespace-pre-wrap" role="text">
-          {renderContent(message.content)}
-        </p>
+        <div role="text" className="text-sm leading-relaxed">
+          <ReactMarkdown
+            components={{
+              a: ({ href, children }) => (
+                <a
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="underline font-medium hover:opacity-80"
+                >
+                  {children}
+                </a>
+              ),
+              p: ({ children }) => <p className="mb-2 last:mb-0">{children}</p>,
+              ol: ({ children }) => <ol className="list-decimal pl-5 mb-2 space-y-1">{children}</ol>,
+              ul: ({ children }) => <ul className="list-disc pl-5 mb-2 space-y-1">{children}</ul>,
+              li: ({ children }) => <li>{children}</li>,
+              strong: ({ children }) => <strong className="font-semibold">{children}</strong>,
+              em: ({ children }) => <em className="italic">{children}</em>,
+              code: ({ children }) => <code className="bg-black/10 dark:bg-white/10 rounded px-1 py-0.5 text-xs font-mono">{children}</code>,
+            }}
+          >
+            {message.content}
+          </ReactMarkdown>
+        </div>
         <div 
           className={`
             text-xs mt-1 opacity-70

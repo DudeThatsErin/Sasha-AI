@@ -20,6 +20,7 @@ export default function ChatInterface() {
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const messagesContainerRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
+  const isSendingRef = useRef(false)
   const { theme, setTheme } = useTheme()
   const [toast, setToast] = useState<{ message: string; type: 'info' | 'success' | 'warning' | 'error' } | null>(null)
   const [isInitializing, setIsInitializing] = useState(true)
@@ -65,7 +66,7 @@ export default function ChatInterface() {
       const importChatId = params.get('import_chat')
 
       if (importChatId) {
-        // Try to find an existing chat with this id first
+        // Try to find an existing chat with this id first (already imported before)
         const existing = await db.getChat(importChatId)
         if (existing) {
           setCurrentChat(existing)
@@ -75,15 +76,13 @@ export default function ChatInterface() {
           return
         }
 
-        // Import widget messages from localStorage
-        const raw = localStorage.getItem('sasha_widget_messages')
-        if (raw) {
+        // Read messages from the ?msgs= URL param (base64 encoded, passed cross-domain by the widget)
+        const msgsParam = params.get('msgs')
+        if (msgsParam) {
           try {
-            const widgetMsgs = JSON.parse(raw) as Array<{ role: string; content: string }>
-            // Create a new chat with the widget's id
+            const decoded = JSON.parse(decodeURIComponent(escape(atob(msgsParam)))) as Array<{ role: string; content: string }>
             const chat = await db.createChat('Chat on ErinSkidds.com')
-            // Manually set the id to match the widget's chatId so future syncs work
-            for (const m of widgetMsgs) {
+            for (const m of decoded) {
               if (m.role === 'user') await db.addMessage(chat.id, m.content, 'user')
               else if (m.role === 'assistant') await db.addMessage(chat.id, m.content, 'sasha')
             }
@@ -191,7 +190,8 @@ export default function ChatInterface() {
 
   const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!inputValue.trim() || !currentChat || isLoading) return
+    if (!inputValue.trim() || !currentChat || isLoading || isSendingRef.current) return
+    isSendingRef.current = true
 
     const messageText = inputValue.trim()
     const isFirstMessage = messages.length === 0
@@ -233,6 +233,7 @@ export default function ChatInterface() {
       const aiMessage = await db.addMessage(currentChat.id, responseText, 'sasha')
       setMessages(prev => [...prev, aiMessage])
 
+      isSendingRef.current = false
       // Announce AI response to screen readers
       announceMessage(data.response, 'sasha')
 
@@ -263,6 +264,7 @@ export default function ChatInterface() {
         }
       }
     } finally {
+      isSendingRef.current = false
       setIsLoading(false)
       // Ensure focus is maintained after loading completes
       setTimeout(() => inputRef.current?.focus(), 50)
@@ -324,7 +326,7 @@ export default function ChatInterface() {
           <div className="flex items-center gap-3">
             <button
               onClick={() => setSidebarOpen(!sidebarOpen)}
-              className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 lg:hidden focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 lg:hidden focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-700 dark:text-gray-200"
               aria-label="Toggle sidebar"
               aria-expanded={sidebarOpen}
             >
