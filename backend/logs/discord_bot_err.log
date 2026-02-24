@@ -267,3 +267,6 @@ Traceback (most recent call last):
   File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1209, in _create_direct_connection
     raise ClientConnectorError(req.connection_key, exc) from exc
 aiohttp.client_exceptions.ClientConnectorError: Cannot connect to host discord.com:443 ssl:default [getaddrinfo failed]
+[2026-02-24 07:26:54] [INFO    ] discord.client: logging in using static token
+[2026-02-24 07:26:55] [INFO    ] discord.gateway: Shard ID None has connected to Gateway (Session ID: 6ab49cf04863864748fde4f6b025adf1).
+[2026-02-24 10:27:35] [INFO    ] discord.gateway: Shard ID None has successfully RESUMED session 6ab49cf04863864748fde4f6b025adf1.
