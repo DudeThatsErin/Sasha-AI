@@ -24,8 +24,8 @@ class Config:
     OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "qwen2.5-coder:7b")
 
     # Generation Settings
-    MAX_NEW_TOKENS = 200
-    TEMPERATURE = 0.8
+    MAX_NEW_TOKENS = 150
+    TEMPERATURE = 0.3
 
     # Sasha's personality system prompt — edit config/system_prompt.txt to update
     _prompt_path = os.path.join(os.path.dirname(__file__), "system_prompt.txt")

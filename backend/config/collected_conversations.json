@@ -226,5 +226,77 @@
     "assistant_response": "Prior to her current role at Payactiv, Erin has worked at several other companies including:\n\n1. **Freelance Full-Stack Engineer** - Self-employed since 2019.\n2. **Full-Stack Developer** at Tenderling Design (2024).\n3. **Front End Software Engineer** at Hometown Hero (2023 \u2013 2024).\n4. **Front End Software Engineer** at The Storage Group, Inc. (2023).\n5. **Full Stack Software Engineer** at Morris Consulting Services, Inc. (2022 \u2013 2023).\n6. **Full Stack Software Engineer** at River & Reef Aquaculture, LLC (2020 \u2013 2022).",
     "timestamp": "2026-02-22T17:44:50.030405",
     "chat_id": "qg548k53uj"
+  },
+  {
+    "user_message": "Who are the boston celtics?",
+    "assistant_response": "The Boston Celtics are a professional basketball team based in Boston, Massachusetts. They compete in the National Basketball Association (NBA) and have had many successful seasons throughout their history. Known for their strong defensive style of play, the team has produced numerous All-Stars and championship-winning players over the years.",
+    "timestamp": "2026-02-22T18:18:10.732127",
+    "chat_id": "widget-1771805860293"
+  },
+  {
+    "user_message": "Does that answer have anything to do with Erin Skidds?",
+    "assistant_response": "No, that information is about the Boston Celtics basketball team, not Erin Skidds. Let me know if you have any other questions about Erin or her work!",
+    "timestamp": "2026-02-22T18:18:29.841818",
+    "chat_id": "widget-1771805860293"
+  },
+  {
+    "user_message": "What is the square root of 36",
+    "assistant_response": "The square root of 36 is 6.",
+    "timestamp": "2026-02-22T18:18:47.204080",
+    "chat_id": "widget-1771805860293"
+  },
+  {
+    "user_message": "Who is Erin?",
+    "assistant_response": "Erin Skidds is a Full-Stack Engineer with over five years of professional experience, specializing in building bots, connecting language learning models to those bots, and website development. She has worked on various projects including leading the architecture and development at Payactiv, founding and growing the r/CodingHelp community, and developing AI-powered bots. Erin is also known for her work on personal projects like Sasha AI, a digital family heirloom chatbot.",
+    "timestamp": "2026-02-23T09:41:48.983798",
+    "chat_id": "widget-1771805860293"
+  },
+  {
+    "user_message": "Who are the la lakers?",
+    "assistant_response": "The Los Angeles Lakers are a professional basketball team based in Los Angeles, California. They compete in the National Basketball Association (NBA) and have had numerous championship victories throughout their history. The team is known for its talented roster and has produced many All-Stars and Hall of Famers.",
+    "timestamp": "2026-02-23T09:42:03.633479",
+    "chat_id": "widget-1771805860293"
+  },
+  {
+    "user_message": "Who is Erin?",
+    "assistant_response": "Erin Skidds is a Full-Stack Engineer with over five years of professional experience, specializing in building bots, connecting language learning models to those bots, and website development. She has worked on various projects including leading the architecture and development at Payactiv, founding and growing the r/CodingHelp community, and developing AI-powered bots. Erin is also known for her work on personal projects like Sasha AI, a digital family heirloom chatbot.",
+    "timestamp": "2026-02-23T09:42:13.467851",
+    "chat_id": "widget-1771805860293"
+  },
+  {
+    "user_message": "What does Erin do for a living?",
+    "assistant_response": "Erin Skidds works as a Full-Stack Engineer, specializing in building bots, connecting language learning models to those bots, and website development. She has experience working on both front-end and back-end code, with expertise in various technologies such as JavaScript, TypeScript, React, Node.js, Python, and more. Erin has led projects at companies like Payactiv and Morris Consulting Services, where she developed mobile applications, enterprise websites, and backend infrastructure.",
+    "timestamp": "2026-02-23T09:42:39.154431",
+    "chat_id": "widget-1771805860293"
+  },
+  {
+    "user_message": "Who does Erin work for?",
+    "assistant_response": "Erin Skidds works for various clients as a freelance Full-Stack Engineer. She has worked on projects for Payactiv, Tenderling Design, Hometown Hero, The Storage Group, Inc., Morris Consulting Services, Inc., and River & Reef Aquaculture, LLC. Additionally, she is the founder of r/CodingHelp on Reddit and Discord, where she mentors developers.",
+    "timestamp": "2026-02-23T09:42:49.614546",
+    "chat_id": "widget-1771805860293"
+  },
+  {
+    "user_message": "Remember that Erin works for Payactiv",
+    "assistant_response": "That's interesting! Let me ask Erin if it's okay for me to learn that. She'll review it and I'll know it once she approves it.",
+    "timestamp": "2026-02-23T09:43:05.401125",
+    "chat_id": "widget-1771805860293"
+  },
+  {
+    "user_message": "Who does Erin work for?",
+    "assistant_response": "Erin Skidds currently works at Payactiv as a Full-Stack Engineer, leading the architecture and development of a greenfield React Native + Next.js monorepo supporting three production apps across iOS, Android, and web.",
+    "timestamp": "2026-02-23T09:43:22.977493",
+    "chat_id": "widget-1771805860293"
+  },
+  {
+    "user_message": "Who does Erin work for?",
+    "assistant_response": "I'm sorry, but I don't have that information available right now. Let me check with Erin directly to find out who she currently works for.",
+    "timestamp": "2026-02-23T10:12:12.594549",
+    "chat_id": "widget-1771805860293"
+  },
+  {
+    "user_message": "Who does Erin work for?",
+    "assistant_response": "Erin Skidds works at Payactiv as a Full-Stack Engineer.",
+    "timestamp": "2026-02-23T10:25:15.854392",
+    "chat_id": "widget-1771805860293"
   }
 ]

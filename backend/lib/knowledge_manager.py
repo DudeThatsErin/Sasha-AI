@@ -47,13 +47,25 @@ def build_system_prompt_from_db(db: Session) -> str:
     return PROMPT_HEADER + "\n".join(body_parts)
 
 
+_cached_prompt: str | None = None
+
+
 def get_system_prompt() -> str:
-    """Get the current system prompt, preferring DB over flat file."""
-    db = SessionLocal()
-    try:
-        return build_system_prompt_from_db(db)
-    finally:
-        db.close()
+    """Get the current system prompt, preferring DB over flat file. Cached after first load."""
+    global _cached_prompt
+    if _cached_prompt is None:
+        db = SessionLocal()
+        try:
+            _cached_prompt = build_system_prompt_from_db(db)
+        finally:
+            db.close()
+    return _cached_prompt
+
+
+def invalidate_prompt_cache() -> None:
+    """Call this whenever knowledge entries are added/updated/deleted."""
+    global _cached_prompt
+    _cached_prompt = None
 
 
 def seed_from_txt(db: Session) -> int:

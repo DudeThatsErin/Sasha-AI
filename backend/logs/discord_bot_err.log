@@ -30,3 +30,240 @@
 [2026-02-22 18:14:11] [INFO    ] discord.gateway: Shard ID None has connected to Gateway (Session ID: 7bf208ce1d166ef0dbb53231143ad98a).
 [2026-02-22 18:15:02] [INFO    ] discord.client: logging in using static token
 [2026-02-22 18:15:03] [INFO    ] discord.gateway: Shard ID None has connected to Gateway (Session ID: e778291a574469f7d0872b889c028784).
+[2026-02-22 19:18:06] [INFO    ] discord.gateway: Shard ID None has successfully RESUMED session e778291a574469f7d0872b889c028784.
+[2026-02-22 19:43:30] [INFO    ] discord.gateway: Shard ID None has successfully RESUMED session e778291a574469f7d0872b889c028784.
+[2026-02-22 22:36:27] [INFO    ] discord.gateway: Shard ID None has successfully RESUMED session e778291a574469f7d0872b889c028784.
+[2026-02-23 00:54:35] [INFO    ] discord.gateway: Shard ID None has successfully RESUMED session e778291a574469f7d0872b889c028784.
+[2026-02-23 02:13:59] [INFO    ] discord.gateway: Shard ID None has successfully RESUMED session e778291a574469f7d0872b889c028784.
+[2026-02-23 04:08:52] [INFO    ] discord.gateway: Shard ID None has successfully RESUMED session e778291a574469f7d0872b889c028784.
+[2026-02-23 04:58:31] [INFO    ] discord.gateway: Shard ID None has successfully RESUMED session e778291a574469f7d0872b889c028784.
+[2026-02-23 06:58:13] [INFO    ] discord.gateway: Shard ID None has successfully RESUMED session e778291a574469f7d0872b889c028784.
+[2026-02-23 08:04:54] [INFO    ] discord.gateway: Shard ID None has successfully RESUMED session e778291a574469f7d0872b889c028784.
+[2026-02-23 08:56:21] [INFO    ] discord.client: logging in using static token
+[2026-02-23 08:56:22] [INFO    ] discord.gateway: Shard ID None has connected to Gateway (Session ID: 02185e4fcda8b53d2b27ca8c7b6ac744).
+[2026-02-23 08:58:37] [INFO    ] discord.client: logging in using static token
+[2026-02-23 08:58:38] [INFO    ] discord.gateway: Shard ID None has connected to Gateway (Session ID: 4c72207369c713e0ce09580fef2ac2e0).
+[2026-02-23 09:02:19] [INFO    ] discord.client: logging in using static token
+[2026-02-23 09:02:20] [INFO    ] discord.gateway: Shard ID None has connected to Gateway (Session ID: ae61b012f7f891fdc2c3cee2137ad526).
+[2026-02-23 09:17:52] [INFO    ] discord.client: logging in using static token
+[2026-02-23 09:17:53] [INFO    ] discord.gateway: Shard ID None has connected to Gateway (Session ID: 3d1ad0dbd39b75ea885e4d6589e00777).
+[2026-02-23 09:26:40] [INFO    ] discord.client: logging in using static token
+[2026-02-23 09:26:40] [INFO    ] discord.gateway: Shard ID None has connected to Gateway (Session ID: f540a2b6f61514726e31a0e2e4757f31).
+[2026-02-23 10:03:30] [INFO    ] discord.client: logging in using static token
+[2026-02-23 10:03:31] [INFO    ] discord.gateway: Shard ID None has connected to Gateway (Session ID: c0e33c358ea88165f7f6524187606814).
+[2026-02-23 10:24:46] [INFO    ] discord.client: logging in using static token
+[2026-02-23 10:24:46] [INFO    ] discord.gateway: Shard ID None has connected to Gateway (Session ID: 7aa37f8dbe30b3b075e58f44ff25bf2d).
+[2026-02-23 12:12:33] [INFO    ] discord.gateway: Shard ID None has successfully RESUMED session 7aa37f8dbe30b3b075e58f44ff25bf2d.
+[2026-02-23 15:08:32] [INFO    ] discord.gateway: Shard ID None has successfully RESUMED session 7aa37f8dbe30b3b075e58f44ff25bf2d.
+[2026-02-23 16:24:39] [INFO    ] discord.gateway: Shard ID None has successfully RESUMED session 7aa37f8dbe30b3b075e58f44ff25bf2d.
+[2026-02-23 19:12:02] [INFO    ] discord.gateway: Shard ID None has successfully RESUMED session 7aa37f8dbe30b3b075e58f44ff25bf2d.
+[2026-02-23 19:57:02] [INFO    ] discord.gateway: Shard ID None has successfully RESUMED session 7aa37f8dbe30b3b075e58f44ff25bf2d.
+[2026-02-23 21:34:41] [INFO    ] discord.gateway: Shard ID None has successfully RESUMED session 7aa37f8dbe30b3b075e58f44ff25bf2d.
+[2026-02-23 22:01:43] [INFO    ] discord.gateway: Shard ID None has successfully RESUMED session 7aa37f8dbe30b3b075e58f44ff25bf2d.
+[2026-02-23 22:45:48] [INFO    ] discord.gateway: Shard ID None has successfully RESUMED session 7aa37f8dbe30b3b075e58f44ff25bf2d.
+[2026-02-24 00:02:41] [INFO    ] discord.gateway: Shard ID None has successfully RESUMED session 7aa37f8dbe30b3b075e58f44ff25bf2d.
+[2026-02-24 02:53:47] [INFO    ] discord.gateway: Shard ID None has successfully RESUMED session 7aa37f8dbe30b3b075e58f44ff25bf2d.
+[2026-02-24 07:26:43] [INFO    ] discord.client: logging in using static token
+Traceback (most recent call last):
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1203, in _create_direct_connection
+    hosts = await self._resolve_host(host, port, traces=traces)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 880, in _resolve_host
+    return await asyncio.shield(resolved_host_task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 917, in _resolve_host_with_throttle
+    addrs = await self._resolver.resolve(host, port, family=self._family)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\resolver.py", line 33, in resolve
+    infos = await self._loop.getaddrinfo(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\asyncio\base_events.py", line 900, in getaddrinfo
+    return await self.run_in_executor(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\concurrent\futures\thread.py", line 59, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\socket.py", line 976, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+socket.gaierror: [Errno 11001] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "f:\repos\Sasha-AI\backend\discord_bot.py", line 283, in <module>
+    bot.run(BOT_TOKEN)
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\client.py", line 860, in run
+    asyncio.run(runner())
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\asyncio\runners.py", line 194, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\asyncio\base_events.py", line 686, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\client.py", line 849, in runner
+    await self.start(token, reconnect=reconnect)
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\client.py", line 777, in start
+    await self.login(token)
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\client.py", line 612, in login
+    data = await self.http.static_login(token)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\http.py", line 803, in static_login
+    data = await self.request(Route('GET', '/users/@me'))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\http.py", line 625, in request
+    async with self.__session.request(method, url, **kwargs) as response:
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client.py", line 1197, in __aenter__
+    self._resp = await self._coro
+                 ^^^^^^^^^^^^^^^^
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client.py", line 581, in _request
+    conn = await self._connector.connect(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 544, in connect
+    proto = await self._create_connection(req, traces, timeout)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 944, in _create_connection
+    _, proto = await self._create_direct_connection(req, traces, timeout)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1209, in _create_direct_connection
+    raise ClientConnectorError(req.connection_key, exc) from exc
+aiohttp.client_exceptions.ClientConnectorError: Cannot connect to host discord.com:443 ssl:default [getaddrinfo failed]
+[2026-02-24 07:26:44] [INFO    ] discord.client: logging in using static token
+Traceback (most recent call last):
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1203, in _create_direct_connection
+    hosts = await self._resolve_host(host, port, traces=traces)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 880, in _resolve_host
+    return await asyncio.shield(resolved_host_task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 917, in _resolve_host_with_throttle
+    addrs = await self._resolver.resolve(host, port, family=self._family)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\resolver.py", line 33, in resolve
+    infos = await self._loop.getaddrinfo(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\asyncio\base_events.py", line 900, in getaddrinfo
+    return await self.run_in_executor(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\concurrent\futures\thread.py", line 59, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\socket.py", line 976, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+socket.gaierror: [Errno 11001] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "f:\repos\Sasha-AI\backend\discord_bot.py", line 283, in <module>
+    bot.run(BOT_TOKEN)
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\client.py", line 860, in run
+    asyncio.run(runner())
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\asyncio\runners.py", line 194, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\asyncio\base_events.py", line 686, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\client.py", line 849, in runner
+    await self.start(token, reconnect=reconnect)
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\client.py", line 777, in start
+    await self.login(token)
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\client.py", line 612, in login
+    data = await self.http.static_login(token)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\http.py", line 803, in static_login
+    data = await self.request(Route('GET', '/users/@me'))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\http.py", line 625, in request
+    async with self.__session.request(method, url, **kwargs) as response:
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client.py", line 1197, in __aenter__
+    self._resp = await self._coro
+                 ^^^^^^^^^^^^^^^^
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client.py", line 581, in _request
+    conn = await self._connector.connect(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 544, in connect
+    proto = await self._create_connection(req, traces, timeout)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 944, in _create_connection
+    _, proto = await self._create_direct_connection(req, traces, timeout)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1209, in _create_direct_connection
+    raise ClientConnectorError(req.connection_key, exc) from exc
+aiohttp.client_exceptions.ClientConnectorError: Cannot connect to host discord.com:443 ssl:default [getaddrinfo failed]
+[2026-02-24 07:26:47] [INFO    ] discord.client: logging in using static token
+Traceback (most recent call last):
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1203, in _create_direct_connection
+    hosts = await self._resolve_host(host, port, traces=traces)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 880, in _resolve_host
+    return await asyncio.shield(resolved_host_task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 917, in _resolve_host_with_throttle
+    addrs = await self._resolver.resolve(host, port, family=self._family)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\resolver.py", line 33, in resolve
+    infos = await self._loop.getaddrinfo(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\asyncio\base_events.py", line 900, in getaddrinfo
+    return await self.run_in_executor(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\concurrent\futures\thread.py", line 59, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\socket.py", line 976, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+socket.gaierror: [Errno 11001] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "f:\repos\Sasha-AI\backend\discord_bot.py", line 283, in <module>
+    bot.run(BOT_TOKEN)
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\client.py", line 860, in run
+    asyncio.run(runner())
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\asyncio\runners.py", line 194, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\asyncio\base_events.py", line 686, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\client.py", line 849, in runner
+    await self.start(token, reconnect=reconnect)
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\client.py", line 777, in start
+    await self.login(token)
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\client.py", line 612, in login
+    data = await self.http.static_login(token)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\http.py", line 803, in static_login
+    data = await self.request(Route('GET', '/users/@me'))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\http.py", line 625, in request
+    async with self.__session.request(method, url, **kwargs) as response:
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client.py", line 1197, in __aenter__
+    self._resp = await self._coro
+                 ^^^^^^^^^^^^^^^^
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client.py", line 581, in _request
+    conn = await self._connector.connect(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 544, in connect
+    proto = await self._create_connection(req, traces, timeout)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 944, in _create_connection
+    _, proto = await self._create_direct_connection(req, traces, timeout)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1209, in _create_direct_connection
+    raise ClientConnectorError(req.connection_key, exc) from exc
+aiohttp.client_exceptions.ClientConnectorError: Cannot connect to host discord.com:443 ssl:default [getaddrinfo failed]

@@ -16,7 +16,7 @@ from lib.model_manager import ModelManager
 from lib.database import init_database, get_db, Knowledge, PendingKnowledge
 from lib.auth import create_default_admin
 from lib.conversation_collector import collector
-from lib.knowledge_manager import seed_from_txt
+from lib.knowledge_manager import seed_from_txt, invalidate_prompt_cache
 
 from sqlalchemy.orm import sessionmaker, Session
 from lib.database import engine
@@ -117,6 +117,7 @@ async def create_knowledge(body: KnowledgeCreate, db: Session = Depends(get_db))
     db.add(entry)
     db.commit()
     db.refresh(entry)
+    invalidate_prompt_cache()
     return {"id": entry.id, "category": entry.category, "content": entry.content}
 
 @app.put("/knowledge/{entry_id}")
@@ -135,6 +136,7 @@ async def update_knowledge(entry_id: int, body: KnowledgeUpdate, db: Session = D
         entry.sort_order = body.sort_order
     db.commit()
     db.refresh(entry)
+    invalidate_prompt_cache()
     return {"id": entry.id, "category": entry.category, "content": entry.content, "is_active": entry.is_active}
 
 @app.delete("/knowledge/{entry_id}")
@@ -145,6 +147,7 @@ async def delete_knowledge(entry_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Entry not found")
     db.delete(entry)
     db.commit()
+    invalidate_prompt_cache()
     return {"message": "Deleted"}
 
 # Include authentication routes
