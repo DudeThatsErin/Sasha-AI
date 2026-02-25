@@ -352,5 +352,11 @@
     "assistant_response": "Hello! How can I assist you today?",
     "timestamp": "2026-02-24T20:40:39.019931",
     "chat_id": "test"
+  },
+  {
+    "user_message": "hi",
+    "assistant_response": "Hi! How can I assist you today?",
+    "timestamp": "2026-02-24T20:46:26.964952",
+    "chat_id": "widget-1771985570212"
   }
 ]
