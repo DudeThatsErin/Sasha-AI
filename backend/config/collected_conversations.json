@@ -298,5 +298,59 @@
     "assistant_response": "Erin Skidds works at Payactiv as a Full-Stack Engineer.",
     "timestamp": "2026-02-23T10:25:15.854392",
     "chat_id": "widget-1771805860293"
+  },
+  {
+    "user_message": "hello",
+    "assistant_response": "SASHA_OFFLINE",
+    "timestamp": "2026-02-24T20:13:00.480960",
+    "chat_id": "widget-1771985570212"
+  },
+  {
+    "user_message": "Hello",
+    "assistant_response": "SASHA_OFFLINE",
+    "timestamp": "2026-02-24T20:18:58.285153",
+    "chat_id": "widget-1771985570212"
+  },
+  {
+    "user_message": "Hello",
+    "assistant_response": "SASHA_OFFLINE",
+    "timestamp": "2026-02-24T20:23:37.013666",
+    "chat_id": "widget-1771985570212"
+  },
+  {
+    "user_message": "hello",
+    "assistant_response": "SASHA_OFFLINE",
+    "timestamp": "2026-02-24T20:24:59.816566",
+    "chat_id": "widget-1771985570212"
+  },
+  {
+    "user_message": "Hello",
+    "assistant_response": "Sorry, I'm offline right now. You can reach Erin directly on:",
+    "timestamp": "2026-02-24T20:38:34.884659",
+    "chat_id": "widget-1771985570212"
+  },
+  {
+    "user_message": "hello",
+    "assistant_response": "Hello! I'm Erin Skidds, a Full-Stack Engineer with a passion for building bots, connecting language learning models to those bots, and website development. I work at Payactiv as a Software Engineer and have experience in both front-end and back-end technologies. If you have any questions about my portfolio or career, feel free to ask!",
+    "timestamp": "2026-02-24T20:39:31.147560",
+    "chat_id": "test"
+  },
+  {
+    "user_message": "hello",
+    "assistant_response": "Hello! How can I assist you today?",
+    "timestamp": "2026-02-24T20:39:52.648981",
+    "chat_id": "test"
+  },
+  {
+    "user_message": "hello",
+    "assistant_response": "Hello! How can I assist you today?",
+    "timestamp": "2026-02-24T20:40:15.322808",
+    "chat_id": "test"
+  },
+  {
+    "user_message": "hello",
+    "assistant_response": "Hello! How can I assist you today?",
+    "timestamp": "2026-02-24T20:40:39.019931",
+    "chat_id": "test"
   }
 ]
