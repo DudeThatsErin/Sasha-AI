@@ -1,7 +1,5 @@
 # Sasha-AI Task Tracker
 
-Test
-
 **Goal:** A chatbot embedded in Erin's portfolio that knows about Erin, so visitors can talk to it as if they were talking to her directly. Long-term: replace Ollama with a fully custom-trained AI model.
 
 ---
