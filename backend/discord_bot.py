@@ -5,6 +5,8 @@ Run this as a separate process alongside the FastAPI backend.
 """
 
 import asyncio
+import logging
+import logging.handlers
 import os
 import sys
 import httpx
@@ -33,6 +35,32 @@ NOTIFY_PORT = int(os.environ.get("DISCORD_NOTIFY_PORT", "8001"))
 if not BOT_TOKEN:
     print("ERROR: DISCORD_BOT_TOKEN not set in .env")
     sys.exit(1)
+
+# Configure file logging
+_log_dir = os.path.join(os.path.dirname(__file__), "logs")
+os.makedirs(_log_dir, exist_ok=True)
+
+_formatter = logging.Formatter("[%(asctime)s] [%(levelname)-8s] %(name)s: %(message)s", datefmt="%Y-%m-%d %H:%M:%S")
+
+_info_handler = logging.handlers.RotatingFileHandler(
+    os.path.join(_log_dir, "sasha_api.log"), maxBytes=5 * 1024 * 1024, backupCount=3, encoding="utf-8"
+)
+_info_handler.setLevel(logging.INFO)
+_info_handler.setFormatter(_formatter)
+
+_err_handler = logging.handlers.RotatingFileHandler(
+    os.path.join(_log_dir, "sasha_api_err.log"), maxBytes=5 * 1024 * 1024, backupCount=3, encoding="utf-8"
+)
+_err_handler.setLevel(logging.WARNING)
+_err_handler.setFormatter(_formatter)
+
+logging.root.setLevel(logging.INFO)
+logging.root.addHandler(_info_handler)
+logging.root.addHandler(_err_handler)
+
+logger = logging.getLogger("sasha.discord")
+
+_notify_runner = None
 
 # ── Discord client setup ──────────────────────────────────────────────────────
 
@@ -123,14 +151,18 @@ async def handle_widget_notify(request: web.Request) -> web.Response:
 
 
 async def start_notify_server():
+    global _notify_runner
+    if _notify_runner is not None:
+        logger.info("Notify server already running, skipping bind")
+        return
     app = web.Application()
     app.router.add_post("/notify-pending", handle_notify)
     app.router.add_post("/notify-widget", handle_widget_notify)
-    runner = web.AppRunner(app)
-    await runner.setup()
-    site = web.TCPSite(runner, "127.0.0.1", NOTIFY_PORT)
+    _notify_runner = web.AppRunner(app)
+    await _notify_runner.setup()
+    site = web.TCPSite(_notify_runner, "127.0.0.1", NOTIFY_PORT)
     await site.start()
-    print(f"Discord notify server listening on http://127.0.0.1:{NOTIFY_PORT}")
+    logger.info(f"Discord notify server listening on http://127.0.0.1:{NOTIFY_PORT}")
 
 
 # ── Slash commands ────────────────────────────────────────────────────────────
@@ -269,15 +301,35 @@ async def pending_deny(interaction: discord.Interaction, entry_id: int):
 
 @bot.event
 async def on_ready():
-    print(f"Sasha Discord bot logged in as {bot.user} (ID: {bot.user.id})")
+    logger.info(f"Sasha Discord bot logged in as {bot.user} (ID: {bot.user.id})")
     await start_notify_server()
     guild = discord.Object(id=GUILD_ID)
     tree.copy_global_to(guild=guild)
     await tree.sync(guild=guild)
-    print(f"Slash commands synced to guild {GUILD_ID}")
+    logger.info(f"Slash commands synced to guild {GUILD_ID}")
 
 
 # ── Entry point ───────────────────────────────────────────────────────────────
 
 if __name__ == "__main__":
+    import socket
+    import time
+
+    max_wait = 300
+    delay = 5
+    waited = 0
+    while waited < max_wait:
+        try:
+            socket.setdefaulttimeout(5)
+            socket.getaddrinfo("discord.com", 443)
+            break
+        except OSError:
+            logger.warning(f"Network not ready, retrying in {delay}s...")
+            time.sleep(delay)
+            waited += delay
+            delay = min(delay * 2, 60)
+    else:
+        logger.error("Network unavailable after 5 minutes, exiting.")
+        sys.exit(1)
+
     bot.run(BOT_TOKEN)

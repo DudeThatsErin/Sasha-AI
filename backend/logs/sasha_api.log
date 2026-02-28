@@ -1,0 +1,10 @@
+[2026-02-27 18:13:03] [INFO    ] sasha.api: Starting Sasha AI Bot...
+[2026-02-27 18:13:05] [WARNING ] discord.client: PyNaCl is not installed, voice will NOT be supported
+[2026-02-27 18:13:05] [INFO    ] discord.client: logging in using static token
+[2026-02-27 18:13:06] [INFO    ] httpx: HTTP Request: GET http://localhost:11434/api/tags "HTTP/1.1 200 OK"
+[2026-02-27 18:13:06] [INFO    ] sasha.api: Knowledge DB already populated — skipping seed
+[2026-02-27 18:13:06] [INFO    ] sasha.api: Sasha AI Bot ready!
+[2026-02-27 18:13:06] [INFO    ] discord.gateway: Shard ID None has connected to Gateway (Session ID: 35b9f665b04223b4f837a3064d04cdfe).
+[2026-02-27 18:13:08] [INFO    ] sasha.discord: Sasha Discord bot logged in as Erin's Little Helper#5732 (ID: 968575653693751298)
+[2026-02-27 18:13:08] [INFO    ] sasha.discord: Discord notify server listening on http://127.0.0.1:8001
+[2026-02-27 18:13:09] [INFO    ] sasha.discord: Slash commands synced to guild 718253204147798047

@@ -8,6 +8,7 @@ from pydantic import BaseModel
 from typing import Optional, List
 import uvicorn
 import logging
+import logging.handlers
 import os
 import httpx
 
@@ -22,6 +23,30 @@ from sqlalchemy.orm import sessionmaker, Session
 from lib.database import engine
 from fastapi import Depends
 from typing import Optional as Opt
+
+# Configure file logging
+_log_dir = os.path.join(os.path.dirname(__file__), "logs")
+os.makedirs(_log_dir, exist_ok=True)
+
+_formatter = logging.Formatter("[%(asctime)s] [%(levelname)-8s] %(name)s: %(message)s", datefmt="%Y-%m-%d %H:%M:%S")
+
+_info_handler = logging.handlers.RotatingFileHandler(
+    os.path.join(_log_dir, "sasha_api.log"), maxBytes=5 * 1024 * 1024, backupCount=3, encoding="utf-8"
+)
+_info_handler.setLevel(logging.INFO)
+_info_handler.setFormatter(_formatter)
+
+_err_handler = logging.handlers.RotatingFileHandler(
+    os.path.join(_log_dir, "sasha_api_err.log"), maxBytes=5 * 1024 * 1024, backupCount=3, encoding="utf-8"
+)
+_err_handler.setLevel(logging.WARNING)
+_err_handler.setFormatter(_formatter)
+
+logging.root.setLevel(logging.INFO)
+logging.root.addHandler(_info_handler)
+logging.root.addHandler(_err_handler)
+
+logger = logging.getLogger("sasha.api")
 
 app = FastAPI(title="Sasha AI Bot", version="3.0.0")
 
@@ -77,18 +102,18 @@ class KnowledgeUpdate(BaseModel):
 @app.on_event("startup")
 async def startup_event():
     """Check Ollama is reachable on startup and seed knowledge DB"""
-    print("Starting Sasha AI Bot...")
+    logger.info("Starting Sasha AI Bot...")
     model_manager.load_model()
     seed_db = SessionLocal()
     try:
         inserted = seed_from_txt(seed_db)
         if inserted:
-            print(f"Seeded {inserted} knowledge entries from system_prompt.txt")
+            logger.info(f"Seeded {inserted} knowledge entries from system_prompt.txt")
         else:
-            print("Knowledge DB already populated — skipping seed")
+            logger.info("Knowledge DB already populated — skipping seed")
     finally:
         seed_db.close()
-    print("Sasha AI Bot ready!")
+    logger.info("Sasha AI Bot ready!")
 
 
 # === KNOWLEDGE MANAGEMENT ENDPOINTS ===
