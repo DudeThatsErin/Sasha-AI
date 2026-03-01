@@ -4,3 +4,47 @@
 [2026-03-01 16:51:14] [INFO    ] sasha.discord: Sasha Discord bot (v2) logged in as Erin's Little Helper#5732 (ID: 968575653693751298)
 [2026-03-01 16:51:14] [INFO    ] sasha.discord: Discord notify server listening on http://127.0.0.1:8001
 [2026-03-01 16:51:14] [INFO    ] sasha.discord: Slash commands synced to guild 718253204147798047
+[2026-03-01 16:57:05] [WARNING ] discord.client: PyNaCl is not installed, voice will NOT be supported
+[2026-03-01 16:57:05] [INFO    ] discord.client: logging in using static token
+[2026-03-01 16:57:06] [INFO    ] discord.gateway: Shard ID None has connected to Gateway (Session ID: 3fafad4979192edb5ce378770fe4202e).
+[2026-03-01 16:57:08] [INFO    ] sasha.discord: Sasha Discord bot (v2) logged in as Erin's Little Helper#5732 (ID: 968575653693751298)
+[2026-03-01 16:57:08] [INFO    ] sasha.discord: Discord notify server listening on http://127.0.0.1:8001
+[2026-03-01 16:57:08] [INFO    ] sasha.discord: Slash commands synced to guild 718253204147798047
+[2026-03-01 17:00:06] [WARNING ] discord.client: PyNaCl is not installed, voice will NOT be supported
+[2026-03-01 17:00:06] [INFO    ] discord.client: logging in using static token
+[2026-03-01 17:00:06] [INFO    ] discord.gateway: Shard ID None has connected to Gateway (Session ID: 12b34e3fb9933ab3fd431ec41f720d86).
+[2026-03-01 17:00:08] [INFO    ] sasha.discord: Sasha Discord bot (v2) logged in as Erin's Little Helper#5732 (ID: 968575653693751298)
+[2026-03-01 17:00:08] [INFO    ] sasha.discord: Discord notify server listening on http://127.0.0.1:8001
+[2026-03-01 17:00:09] [INFO    ] sasha.discord: Slash commands synced to guild 718253204147798047
+[2026-03-01 17:01:11] [WARNING ] discord.client: PyNaCl is not installed, voice will NOT be supported
+[2026-03-01 17:01:11] [INFO    ] discord.client: logging in using static token
+[2026-03-01 17:01:12] [INFO    ] discord.gateway: Shard ID None has connected to Gateway (Session ID: 882a832440db57e7f42c710bc35d082c).
+[2026-03-01 17:01:14] [INFO    ] sasha.discord: Sasha Discord bot (v2) logged in as Erin's Little Helper#5732 (ID: 968575653693751298)
+[2026-03-01 17:01:14] [INFO    ] sasha.discord: Discord notify server listening on http://127.0.0.1:8001
+[2026-03-01 17:01:14] [INFO    ] sasha.discord: Slash commands synced to guild 718253204147798047
+[2026-03-01 17:03:36] [WARNING ] discord.client: PyNaCl is not installed, voice will NOT be supported
+[2026-03-01 17:03:36] [INFO    ] discord.client: logging in using static token
+[2026-03-01 17:03:37] [INFO    ] discord.gateway: Shard ID None has connected to Gateway (Session ID: fc5026ab928c66f12d46307e2314bced).
+[2026-03-01 17:03:39] [INFO    ] sasha.discord: Sasha Discord bot (v2) logged in as Erin's Little Helper#5732 (ID: 968575653693751298)
+[2026-03-01 17:03:39] [INFO    ] sasha.discord: Discord notify server listening on http://127.0.0.1:8001
+[2026-03-01 17:03:39] [INFO    ] sasha.discord: Slash commands synced to guild 718253204147798047
+[2026-03-01 17:05:27] [WARNING ] discord.client: PyNaCl is not installed, voice will NOT be supported
+[2026-03-01 17:05:27] [INFO    ] discord.client: logging in using static token
+[2026-03-01 17:05:27] [INFO    ] discord.gateway: Shard ID None has connected to Gateway (Session ID: 4e7e12e7f4d81802301169ad58faf142).
+[2026-03-01 17:05:29] [INFO    ] sasha.discord: Sasha Discord bot (v2) logged in as Erin's Little Helper#5732 (ID: 968575653693751298)
+[2026-03-01 17:05:29] [INFO    ] sasha.discord: Discord notify server listening on http://127.0.0.1:8001
+[2026-03-01 17:05:29] [INFO    ] sasha.discord: Slash commands synced to guild 718253204147798047
+[2026-03-01 17:05:38] [INFO    ] sasha.discord: DM received from violetshard: 'https://onedrive.live.com/view.aspx?resid=9B29F5550ED535ED%21s26dcdec144a94a1abf5f773e5c3ba6ac&id=documents&wd=target%2898_Meta%2F_Previous%20Years%2F2020%2F12.one%7CDAF093FC-A0D5-4BD9-AE70-E83E42F0B8'
+[2026-03-01 17:05:38] [INFO    ] sasha.discord: OneNote URLs: ['onenote:https://d.docs.live.net/9b29f5550ed535ed/Documents/Imports/98_Meta/_Previous%20Years/2020/12.one#7th%20-%20Monday&section-id={DAF093FC-A0D5-4BD9-AE70-E83E42F0B8F1}&page-id={EF30190C-7DE0-4483-97B6-CE3799E0EC70}&end'] | HTTPS URLs: ['https://onedrive.live.com/view.aspx?resid=9B29F5550ED535ED%21s26dcdec144a94a1abf5f773e5c3ba6ac&id=documents&wd=target%2898_Meta%2F_Previous%20Years%2F2020%2F12.one%7CDAF093FC-A0D5-4BD9-AE70-E83E42F0B8F1%2F7th%20-%20Monday%7CEF30190C-7DE0-4483-97B6-CE3799E0EC70%2F%29&wdpartid={54727D8F-C5FD-4FBE-ADFC-B1FBFE31173E}{41}&wdsectionfileid=9B29F5550ED535ED!sfe6a5276497c458ba26bc0daf83e81d4&end', 'https://d.docs.live.net/9b29f5550ed535ed/Documents/Imports/98_Meta/_Previous%20Years/2020/12.one#7th%20-%20Monday&section-id={DAF093FC-A0D5-4BD9-AE70-E83E42F0B8F1}&page-id={EF30190C-7DE0-4483-97B6-CE3799E0EC70}&end']
+[2026-03-01 17:27:27] [WARNING ] discord.client: PyNaCl is not installed, voice will NOT be supported
+[2026-03-01 17:27:27] [INFO    ] discord.client: logging in using static token
+[2026-03-01 17:27:27] [INFO    ] discord.gateway: Shard ID None has connected to Gateway (Session ID: a8cce9725d040d0e2d5862be1f434619).
+[2026-03-01 17:27:29] [INFO    ] sasha.discord: Sasha Discord bot (v2) logged in as Erin's Little Helper#5732 (ID: 968575653693751298)
+[2026-03-01 17:27:29] [INFO    ] sasha.discord: Discord notify server listening on http://127.0.0.1:8001
+[2026-03-01 17:27:30] [INFO    ] sasha.discord: Slash commands synced to guild 718253204147798047
+[2026-03-01 17:39:23] [WARNING ] discord.client: PyNaCl is not installed, voice will NOT be supported
+[2026-03-01 17:39:23] [INFO    ] discord.client: logging in using static token
+[2026-03-01 17:39:24] [INFO    ] discord.gateway: Shard ID None has connected to Gateway (Session ID: ec063a8ba760f3a00d129685c21db3b7).
+[2026-03-01 17:39:26] [INFO    ] sasha.discord: Sasha Discord bot (v2) logged in as Erin's Testing Bot#2020 (ID: 819997306732019742)
+[2026-03-01 17:39:26] [INFO    ] sasha.discord: Discord notify server listening on http://127.0.0.1:8001
+[2026-03-01 17:39:26] [INFO    ] sasha.discord: Slash commands synced to guild 718253204147798047

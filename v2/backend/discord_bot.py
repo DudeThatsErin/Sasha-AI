@@ -8,6 +8,8 @@ import asyncio
 import logging
 import logging.handlers
 import os
+import random
+import re
 import sys
 import httpx
 import discord
@@ -72,10 +74,47 @@ logger = logging.getLogger("sasha.discord")
 
 _notify_runner = None
 
+STATUS_ROTATE_HOURS = float(os.environ.get("BOT_STATUS_ROTATE_HOURS", "2"))
+
+STATUS_MESSAGES = [
+    "✨ Be the energy you want to attract.",
+    "☕ Espresso yourself.",
+    "🌱 Growth is uncomfortable. Do it anyway.",
+    "🦋 She believed she could, so she did.",
+    "🔥 Start before you're ready.",
+    "🌙 Rest is productive too.",
+    "💡 Clarity comes from action, not thought.",
+    "🎯 Done is better than perfect.",
+    "🌊 Go with the flow... unless the flow is wrong.",
+    "🧠 Your only limit is your mind. And maybe Wi-Fi.",
+    "🌸 Bloom where you are planted.",
+    "⚡ Move fast. Break nothing important.",
+    "🦄 Normal is overrated.",
+    "🍵 Good things take time. Tea takes 4 minutes.",
+    "🌟 You don't have to be great to start, but you have to start to be great.",
+    "🐢 Slow progress is still progress.",
+    "💪 Hard days build strong people.",
+    "🎨 Create something today, even if it's a mess.",
+    "🌈 After every storm comes a rainbow. And usually good Wi-Fi.",
+    "🔑 The door to success is always open. It's just heavy.",
+    "🧩 You are not behind. You are on your own path.",
+    "🚀 Shoot for the moon. Even if you miss, you'll land among the stars.",
+    "🪴 Water yourself. You're a plant too.",
+    "😴 Naps are just aggressive self-care.",
+    "🎵 Life is short. Listen to the good music.",
+    "🌻 Turn your face toward the sun.",
+    "💬 Say kind things to yourself. You're listening.",
+    "🏔️ The view is better from the top. Keep climbing.",
+    "🍀 Lucky things happen to people who show up.",
+    "✍️ Write it down. Make it happen.",
+]
+
+
 # ── Discord client ────────────────────────────────────────────────────────────
 
 intents = discord.Intents.default()
 intents.message_content = True
+intents.messages = True
 bot = commands.Bot(command_prefix="!", intents=intents)
 tree = bot.tree
 
@@ -315,6 +354,81 @@ async def rag_status_cmd(interaction: discord.Interaction):
         await interaction.followup.send(f"⚠️ Error: {r.text}", ephemeral=True)
 
 
+# ── OneNote link parser ───────────────────────────────────────────────────────
+
+_ONENOTE_RE = re.compile(r'onenote:[^\s>)"\']+', re.IGNORECASE)
+_HTTPS_RE = re.compile(r'https://[^\s>)"\']+', re.IGNORECASE)
+
+
+@bot.event
+async def on_message(message: discord.Message):
+    """Handle DMs: if the message contains a OneNote link, split and echo both URLs."""
+    if message.author.bot:
+        return
+    if not isinstance(message.channel, discord.DMChannel):
+        await bot.process_commands(message)
+        return
+
+    content = message.content.strip()
+    logger.info(f"DM received from {message.author}: {repr(content[:200])}")
+
+    onenote_urls = _ONENOTE_RE.findall(content)
+    https_urls = _HTTPS_RE.findall(content)
+    logger.info(f"OneNote URLs: {onenote_urls} | HTTPS URLs: {https_urls}")
+
+    if not onenote_urls:
+        await bot.process_commands(message)
+        return
+
+    # Deduplicate while preserving order; prefer d.docs.live.net over view.aspx when both present
+    seen = set()
+    deduped_https: list[str] = []
+    for url in https_urls:
+        if url not in seen:
+            seen.add(url)
+            deduped_https.append(url)
+    # If we have both a view.aspx and a d.docs.live.net URL, drop the view.aspx one
+    live_net = [u for u in deduped_https if "d.docs.live.net" in u]
+    view_aspx = [u for u in deduped_https if "d.docs.live.net" not in u]
+    if live_net and view_aspx:
+        deduped_https = live_net  # keep only the cleaner direct link
+
+    lines: list[str] = []
+
+    lines.append("**In-app link** (opens OneNote desktop):")
+    for url in onenote_urls:
+        lines.append(f"```\n{url}\n```")
+        lines.append(f"[Click to open in OneNote](<{url}>)")
+
+    if deduped_https:
+        lines.append("\n**Web link** (opens in browser):")
+        for url in deduped_https:
+            lines.append(f"```\n{url}\n```")
+            lines.append(f"[Click to open in browser](<{url}>)")
+    else:
+        lines.append("_No https:// link found in that paste._")
+
+    await message.reply("\n".join(lines), mention_author=False)
+    await bot.process_commands(message)
+
+
+# ── Rotating status task ─────────────────────────────────────────────────────
+
+async def rotate_status():
+    await bot.wait_until_ready()
+    used: list[str] = []
+    while not bot.is_closed():
+        remaining = [s for s in STATUS_MESSAGES if s not in used]
+        if not remaining:
+            used.clear()
+            remaining = STATUS_MESSAGES[:]
+        choice = random.choice(remaining)
+        used.append(choice)
+        await bot.change_presence(activity=discord.CustomActivity(name=choice))
+        logger.info(f"Status updated to: {choice}")
+        await asyncio.sleep(STATUS_ROTATE_HOURS * 3600)
+
+
 # ── Bot events ────────────────────────────────────────────────────────────────
 
 @bot.event
@@ -325,6 +439,7 @@ async def on_ready():
     tree.copy_global_to(guild=guild)
     await tree.sync(guild=guild)
     logger.info(f"Slash commands synced to guild {GUILD_ID}")
+    bot.loop.create_task(rotate_status())
 
 
 # ── Entry point ───────────────────────────────────────────────────────────────

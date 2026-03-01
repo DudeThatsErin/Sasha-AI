@@ -308,6 +308,7 @@ _HTTPS_RE = re.compile(r'https://[^\s>)"\']+', re.IGNORECASE)
 @bot.event
 async def on_message(message: discord.Message):
     """Handle DMs: if the message looks like a OneNote link paste, split and echo both URLs."""
+    logger.info(f"on_message fired: author={message.author} channel_type={type(message.channel).__name__} content_len={len(message.content)}")
     # Only respond in DMs, ignore own messages
     if message.author.bot:
         return
@@ -316,9 +317,11 @@ async def on_message(message: discord.Message):
         return
 
     content = message.content.strip()
+    logger.info(f"DM received from {message.author}: {repr(content[:200])}")
 
     onenote_urls = _ONENOTE_RE.findall(content)
     https_urls = _HTTPS_RE.findall(content)
+    logger.info(f"OneNote URLs found: {onenote_urls}, HTTPS URLs found: {https_urls}")
 
     # Only trigger if at least one onenote:// URL is present
     if not onenote_urls:
