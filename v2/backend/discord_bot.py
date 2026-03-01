@@ -1,5 +1,5 @@
 """
-Sasha AI - Discord Bot
+Sasha AI v2 - Discord Bot
 Handles knowledge approval requests and DB management via Discord.
 Run this as a separate process alongside the FastAPI backend.
 """
@@ -8,7 +8,6 @@ import asyncio
 import logging
 import logging.handlers
 import os
-import re
 import sys
 import httpx
 import discord
@@ -16,7 +15,7 @@ from discord import app_commands
 from discord.ext import commands
 from aiohttp import web
 
-# Load .env manually (no python-dotenv required)
+# Load .env manually
 _env_path = os.path.join(os.path.dirname(__file__), ".env")
 if os.path.exists(_env_path):
     with open(_env_path) as f:
@@ -37,20 +36,30 @@ if not BOT_TOKEN:
     print("ERROR: DISCORD_BOT_TOKEN not set in .env")
     sys.exit(1)
 
-# Configure file logging
+# ── Logging ───────────────────────────────────────────────────────────────────
+
 _log_dir = os.path.join(os.path.dirname(__file__), "logs")
 os.makedirs(_log_dir, exist_ok=True)
 
-_formatter = logging.Formatter("[%(asctime)s] [%(levelname)-8s] %(name)s: %(message)s", datefmt="%Y-%m-%d %H:%M:%S")
+_formatter = logging.Formatter(
+    "[%(asctime)s] [%(levelname)-8s] %(name)s: %(message)s",
+    datefmt="%Y-%m-%d %H:%M:%S",
+)
 
 _info_handler = logging.handlers.RotatingFileHandler(
-    os.path.join(_log_dir, "sasha_api.log"), maxBytes=5 * 1024 * 1024, backupCount=3, encoding="utf-8"
+    os.path.join(_log_dir, "sasha_discord.log"),
+    maxBytes=5 * 1024 * 1024,
+    backupCount=3,
+    encoding="utf-8",
 )
 _info_handler.setLevel(logging.INFO)
 _info_handler.setFormatter(_formatter)
 
 _err_handler = logging.handlers.RotatingFileHandler(
-    os.path.join(_log_dir, "sasha_api_err.log"), maxBytes=5 * 1024 * 1024, backupCount=3, encoding="utf-8"
+    os.path.join(_log_dir, "sasha_discord_err.log"),
+    maxBytes=5 * 1024 * 1024,
+    backupCount=3,
+    encoding="utf-8",
 )
 _err_handler.setLevel(logging.WARNING)
 _err_handler.setFormatter(_formatter)
@@ -63,11 +72,10 @@ logger = logging.getLogger("sasha.discord")
 
 _notify_runner = None
 
-# ── Discord client setup ──────────────────────────────────────────────────────
+# ── Discord client ────────────────────────────────────────────────────────────
 
 intents = discord.Intents.default()
 intents.message_content = True
-intents.messages = True
 bot = commands.Bot(command_prefix="!", intents=intents)
 tree = bot.tree
 
@@ -106,19 +114,16 @@ class ApprovalView(discord.ui.View):
             await interaction.followup.send(f"⚠️ Backend error: {r.text}", ephemeral=True)
 
 
-# ── Internal HTTP server (receives notify calls from FastAPI) ─────────────────
+# ── Internal HTTP server ──────────────────────────────────────────────────────
 
 async def handle_notify(request: web.Request) -> web.Response:
-    """FastAPI calls POST /notify-pending → bot sends Discord message."""
     try:
         data = await request.json()
         pending_id = data["pending_id"]
         content = data["content"]
-
         channel = bot.get_channel(CHANNEL_ID)
         if channel is None:
             return web.json_response({"error": "Channel not found"}, status=500)
-
         owner_mention = f"<@{OWNER_ID}>" if OWNER_ID else "Erin"
         msg = await channel.send(
             f"{owner_mention} 🤔 Someone wants Sasha to learn something new:\n\n"
@@ -128,27 +133,21 @@ async def handle_notify(request: web.Request) -> web.Response:
         )
         return web.json_response({"discord_message_id": str(msg.id)})
     except Exception as e:
-        print(f"Notify handler error: {e}")
+        logger.error(f"Notify handler error: {e}")
         return web.json_response({"error": str(e)}, status=500)
 
 
 async def handle_widget_notify(request: web.Request) -> web.Response:
-    """FastAPI calls POST /notify-widget → bot sends a brief Discord message."""
     try:
         data = await request.json()
         message = data.get("message", "(unknown)")
-        chat_id = data.get("chat_id", "unknown")
-
         channel = bot.get_channel(CHANNEL_ID)
         if channel is None:
             return web.json_response({"error": "Channel not found"}, status=500)
-
-        await channel.send(
-            f"💬 **Widget used!** Someone asked Sasha:\n> {message[:300]}"
-        )
+        await channel.send(f"💬 **Widget used!** Someone asked Sasha:\n> {message[:300]}")
         return web.json_response({"ok": True})
     except Exception as e:
-        print(f"Widget notify handler error: {e}")
+        logger.error(f"Widget notify handler error: {e}")
         return web.json_response({"error": str(e)}, status=500)
 
 
@@ -157,10 +156,10 @@ async def start_notify_server():
     if _notify_runner is not None:
         logger.info("Notify server already running, skipping bind")
         return
-    app = web.Application()
-    app.router.add_post("/notify-pending", handle_notify)
-    app.router.add_post("/notify-widget", handle_widget_notify)
-    _notify_runner = web.AppRunner(app)
+    notify_app = web.Application()
+    notify_app.router.add_post("/notify-pending", handle_notify)
+    notify_app.router.add_post("/notify-widget", handle_widget_notify)
+    _notify_runner = web.AppRunner(notify_app)
     await _notify_runner.setup()
     site = web.TCPSite(_notify_runner, "127.0.0.1", NOTIFY_PORT)
     await site.start()
@@ -177,20 +176,15 @@ async def knowledge_list(interaction: discord.Interaction, category: str = "ALL"
     if r.status_code != 200:
         await interaction.followup.send("⚠️ Could not reach backend.", ephemeral=True)
         return
-
     entries = r.json()
     if category != "ALL":
         entries = [e for e in entries if e["category"].upper() == category.upper()]
-
     if not entries:
         await interaction.followup.send("No entries found.", ephemeral=True)
         return
-
-    # Group by category
     grouped: dict[str, list] = {}
     for e in entries:
         grouped.setdefault(e["category"], []).append(e)
-
     lines = []
     for cat, items in grouped.items():
         lines.append(f"**{cat}**")
@@ -198,12 +192,9 @@ async def knowledge_list(interaction: discord.Interaction, category: str = "ALL"
             status = "✓" if item["is_active"] else "○"
             lines.append(f"  `{item['id']}` {status} {item['content'][:80]}")
         lines.append("")
-
     text = "\n".join(lines)
-    # Discord message limit is 2000 chars
     if len(text) > 1900:
-        text = text[:1900] + f"\n…(truncated) — [View full list](<https://chat.erinskidds.com/admin>)"
-
+        text = text[:1900] + "\n…(truncated)"
     await interaction.followup.send(text, ephemeral=True)
 
 
@@ -243,13 +234,22 @@ async def knowledge_delete(interaction: discord.Interaction, entry_id: int):
 async def knowledge_toggle(interaction: discord.Interaction, entry_id: int, active: bool):
     await interaction.response.defer(ephemeral=True)
     async with httpx.AsyncClient(timeout=10) as client:
-        r = await client.put(
-            f"{BACKEND_URL}/knowledge/{entry_id}",
-            json={"is_active": active},
-        )
+        r = await client.put(f"{BACKEND_URL}/knowledge/{entry_id}", json={"is_active": active})
     if r.status_code == 200:
         state = "enabled ✅" if active else "disabled ○"
         await interaction.followup.send(f"Entry `{entry_id}` is now {state}.", ephemeral=True)
+    else:
+        await interaction.followup.send(f"⚠️ Error: {r.text}", ephemeral=True)
+
+
+@tree.command(name="knowledge-rebuild", description="Rebuild Sasha's RAG vector index", guilds=[discord.Object(id=GUILD_ID)])
+async def knowledge_rebuild(interaction: discord.Interaction):
+    await interaction.response.defer(ephemeral=True)
+    async with httpx.AsyncClient(timeout=60) as client:
+        r = await client.post(f"{BACKEND_URL}/knowledge/rebuild-index")
+    if r.status_code == 200:
+        data = r.json()
+        await interaction.followup.send(f"🔄 {data['message']}", ephemeral=True)
     else:
         await interaction.followup.send(f"⚠️ Error: {r.text}", ephemeral=True)
 
@@ -262,16 +262,13 @@ async def pending_list(interaction: discord.Interaction):
     if r.status_code != 200:
         await interaction.followup.send("⚠️ Could not reach backend.", ephemeral=True)
         return
-
     entries = [e for e in r.json() if e["status"] == "pending"]
     if not entries:
         await interaction.followup.send("No pending entries.", ephemeral=True)
         return
-
     lines = ["**Pending Knowledge Requests:**"]
     for e in entries:
         lines.append(f"`{e['id']}` — {e['content'][:100]}")
-
     await interaction.followup.send("\n".join(lines), ephemeral=True)
 
 
@@ -299,56 +296,30 @@ async def pending_deny(interaction: discord.Interaction, entry_id: int):
         await interaction.followup.send(f"⚠️ Error: {r.text}", ephemeral=True)
 
 
-# ── OneNote link parser ───────────────────────────────────────────────────────
-
-_ONENOTE_RE = re.compile(r'onenote:[^\s>)"\']+', re.IGNORECASE)
-_HTTPS_RE = re.compile(r'https://[^\s>)"\']+', re.IGNORECASE)
-
-
-@bot.event
-async def on_message(message: discord.Message):
-    """Handle DMs: if the message looks like a OneNote link paste, split and echo both URLs."""
-    # Only respond in DMs, ignore own messages
-    if message.author.bot:
-        return
-    if not isinstance(message.channel, discord.DMChannel):
-        await bot.process_commands(message)
-        return
-
-    content = message.content.strip()
-
-    onenote_urls = _ONENOTE_RE.findall(content)
-    https_urls = _HTTPS_RE.findall(content)
-
-    # Only trigger if at least one onenote:// URL is present
-    if not onenote_urls:
-        await bot.process_commands(message)
-        return
-
-    lines: list[str] = []
-
-    if onenote_urls:
-        lines.append("**In-app link** (opens OneNote desktop):")
-        for url in onenote_urls:
-            lines.append(f"```\n{url}\n```")
-
-    if https_urls:
-        lines.append("**Web link** (opens in browser):")
-        for url in https_urls:
-            lines.append(f"```\n{url}\n```")
-
-    if not https_urls:
-        lines.append("_No https:// link found in that paste._")
-
-    await message.reply("\n".join(lines), mention_author=False)
-    await bot.process_commands(message)
+@tree.command(name="rag-status", description="Check the RAG vector index status", guilds=[discord.Object(id=GUILD_ID)])
+async def rag_status_cmd(interaction: discord.Interaction):
+    await interaction.response.defer(ephemeral=True)
+    async with httpx.AsyncClient(timeout=10) as client:
+        r = await client.get(f"{BACKEND_URL}/rag/status")
+    if r.status_code == 200:
+        data = r.json()
+        enabled = "✅ Enabled" if data.get("rag_enabled") else "⚠️ Disabled (fallback mode)"
+        msg = (
+            f"**RAG Status:** {enabled}\n"
+            f"**Embed model:** `{data.get('embed_model', 'N/A')}`\n"
+            f"**Indexed entries:** `{data.get('indexed_entries', 0)}`\n"
+            f"**Top-K:** `{data.get('top_k', 'N/A')}`"
+        )
+        await interaction.followup.send(msg, ephemeral=True)
+    else:
+        await interaction.followup.send(f"⚠️ Error: {r.text}", ephemeral=True)
 
 
 # ── Bot events ────────────────────────────────────────────────────────────────
 
 @bot.event
 async def on_ready():
-    logger.info(f"Sasha Discord bot logged in as {bot.user} (ID: {bot.user.id})")
+    logger.info(f"Sasha Discord bot (v2) logged in as {bot.user} (ID: {bot.user.id})")
     await start_notify_server()
     guild = discord.Object(id=GUILD_ID)
     tree.copy_global_to(guild=guild)

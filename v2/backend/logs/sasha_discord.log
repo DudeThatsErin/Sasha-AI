@@ -1,0 +1,6 @@
+[2026-03-01 16:51:11] [WARNING ] discord.client: PyNaCl is not installed, voice will NOT be supported
+[2026-03-01 16:51:11] [INFO    ] discord.client: logging in using static token
+[2026-03-01 16:51:12] [INFO    ] discord.gateway: Shard ID None has connected to Gateway (Session ID: eee2188f8febd7b2a943a671c6bc0110).
+[2026-03-01 16:51:14] [INFO    ] sasha.discord: Sasha Discord bot (v2) logged in as Erin's Little Helper#5732 (ID: 968575653693751298)
+[2026-03-01 16:51:14] [INFO    ] sasha.discord: Discord notify server listening on http://127.0.0.1:8001
+[2026-03-01 16:51:14] [INFO    ] sasha.discord: Slash commands synced to guild 718253204147798047

@@ -8,3 +8,36 @@
 [2026-02-27 18:13:08] [INFO    ] sasha.discord: Sasha Discord bot logged in as Erin's Little Helper#5732 (ID: 968575653693751298)
 [2026-02-27 18:13:08] [INFO    ] sasha.discord: Discord notify server listening on http://127.0.0.1:8001
 [2026-02-27 18:13:09] [INFO    ] sasha.discord: Slash commands synced to guild 718253204147798047
+[2026-02-27 18:35:00] [INFO    ] discord.gateway: Shard ID None has successfully RESUMED session 35b9f665b04223b4f837a3064d04cdfe.
+[2026-02-27 21:27:55] [INFO    ] discord.gateway: Shard ID None has successfully RESUMED session 35b9f665b04223b4f837a3064d04cdfe.
+[2026-02-27 23:26:50] [INFO    ] discord.gateway: Shard ID None has successfully RESUMED session 35b9f665b04223b4f837a3064d04cdfe.
+[2026-02-28 11:51:37] [WARNING ] discord.gateway: Shard ID None has stopped responding to the gateway. Closing and restarting.
+[2026-02-28 11:51:37] [INFO    ] discord.gateway: Shard ID None session has been invalidated.
+[2026-02-28 11:51:42] [INFO    ] discord.gateway: Shard ID None has connected to Gateway (Session ID: 40ebc3a37c289e804b01bd83e4729432).
+[2026-02-28 11:51:44] [INFO    ] sasha.discord: Sasha Discord bot logged in as Erin's Little Helper#5732 (ID: 968575653693751298)
+[2026-02-28 11:51:44] [INFO    ] sasha.discord: Notify server already running, skipping bind
+[2026-02-28 11:51:44] [INFO    ] sasha.discord: Slash commands synced to guild 718253204147798047
+[2026-02-28 12:21:40] [INFO    ] discord.gateway: Shard ID None has successfully RESUMED session 40ebc3a37c289e804b01bd83e4729432.
+[2026-02-28 12:34:49] [INFO    ] discord.gateway: Shard ID None has successfully RESUMED session 40ebc3a37c289e804b01bd83e4729432.
+[2026-02-28 13:30:16] [INFO    ] discord.gateway: Shard ID None has successfully RESUMED session 40ebc3a37c289e804b01bd83e4729432.
+[2026-02-28 15:14:14] [INFO    ] discord.gateway: Shard ID None has successfully RESUMED session 40ebc3a37c289e804b01bd83e4729432.
+[2026-02-28 16:17:27] [INFO    ] discord.gateway: Shard ID None has successfully RESUMED session 40ebc3a37c289e804b01bd83e4729432.
+[2026-02-28 18:34:13] [INFO    ] discord.gateway: Shard ID None has successfully RESUMED session 40ebc3a37c289e804b01bd83e4729432.
+[2026-02-28 22:15:15] [INFO    ] discord.gateway: Shard ID None has successfully RESUMED session 40ebc3a37c289e804b01bd83e4729432.
+[2026-03-01 13:23:39] [WARNING ] discord.gateway: Shard ID None has stopped responding to the gateway. Closing and restarting.
+[2026-03-01 13:23:40] [INFO    ] discord.gateway: Shard ID None session has been invalidated.
+[2026-03-01 13:23:46] [INFO    ] discord.gateway: Shard ID None has connected to Gateway (Session ID: fee46948d1121235eccefb57411a1bb2).
+[2026-03-01 13:23:48] [INFO    ] sasha.discord: Sasha Discord bot logged in as Erin's Little Helper#5732 (ID: 968575653693751298)
+[2026-03-01 13:23:48] [INFO    ] sasha.discord: Notify server already running, skipping bind
+[2026-03-01 13:23:48] [INFO    ] sasha.discord: Slash commands synced to guild 718253204147798047
+[2026-03-01 15:21:55] [INFO    ] discord.gateway: Shard ID None has successfully RESUMED session fee46948d1121235eccefb57411a1bb2.
+[2026-03-01 16:30:41] [WARNING ] discord.client: PyNaCl is not installed, voice will NOT be supported
+[2026-03-01 16:30:41] [INFO    ] discord.client: logging in using static token
+[2026-03-01 16:30:41] [INFO    ] discord.gateway: Shard ID None has connected to Gateway (Session ID: 0bd10705e74139c6e13bec969c8ec873).
+[2026-03-01 16:30:43] [INFO    ] sasha.api: Starting Sasha AI Bot...
+[2026-03-01 16:30:43] [INFO    ] sasha.discord: Sasha Discord bot logged in as Erin's Little Helper#5732 (ID: 968575653693751298)
+[2026-03-01 16:30:43] [INFO    ] sasha.discord: Discord notify server listening on http://127.0.0.1:8001
+[2026-03-01 16:30:44] [INFO    ] sasha.discord: Slash commands synced to guild 718253204147798047
+[2026-03-01 16:30:45] [INFO    ] httpx: HTTP Request: GET http://localhost:11434/api/tags "HTTP/1.1 200 OK"
+[2026-03-01 16:30:45] [INFO    ] sasha.api: Knowledge DB already populated — skipping seed
+[2026-03-01 16:30:45] [INFO    ] sasha.api: Sasha AI Bot ready!
