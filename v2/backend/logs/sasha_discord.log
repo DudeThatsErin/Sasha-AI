@@ -48,3 +48,10 @@
 [2026-03-01 17:39:26] [INFO    ] sasha.discord: Sasha Discord bot (v2) logged in as Erin's Testing Bot#2020 (ID: 819997306732019742)
 [2026-03-01 17:39:26] [INFO    ] sasha.discord: Discord notify server listening on http://127.0.0.1:8001
 [2026-03-01 17:39:26] [INFO    ] sasha.discord: Slash commands synced to guild 718253204147798047
+[2026-03-01 17:59:12] [WARNING ] discord.client: PyNaCl is not installed, voice will NOT be supported
+[2026-03-01 17:59:12] [INFO    ] discord.client: logging in using static token
+[2026-03-01 17:59:13] [INFO    ] discord.gateway: Shard ID None has connected to Gateway (Session ID: 6aac67f0a4dc8e86d6f0f089f69941ba).
+[2026-03-01 17:59:15] [INFO    ] sasha.discord: Sasha Discord bot (v2) logged in as Sasha Ai#2020 (ID: 819997306732019742)
+[2026-03-01 17:59:15] [INFO    ] sasha.discord: Discord notify server listening on http://127.0.0.1:8001
+[2026-03-01 17:59:15] [INFO    ] sasha.discord: Slash commands synced to guild 718253204147798047
+[2026-03-01 17:59:15] [INFO    ] sasha.discord: Status updated to: ☕ Espresso yourself.
