@@ -454,3 +454,13 @@
 [2026-05-01 07:27:38] [INFO    ] sasha.rag: Rebuilt RAG index with 25 entries.
 [2026-05-01 07:27:38] [INFO    ] sasha.api: RAG index built with 25 entries.
 [2026-05-01 07:27:38] [INFO    ] sasha.api: Sasha AI v2 ready!
+[2026-05-02 12:48:32] [INFO    ] sasha.api: Starting Sasha AI v2...
+[2026-05-02 12:48:34] [INFO    ] httpx: HTTP Request: GET http://localhost:11434/api/tags "HTTP/1.1 200 OK"
+[2026-05-02 12:48:34] [INFO    ] sasha.model: LLM model 'qwen2.5-coder:7b' is available.
+[2026-05-02 12:48:34] [INFO    ] sasha.model: Embed model 'nomic-embed-text' is available.
+[2026-05-02 12:48:34] [INFO    ] sasha.api: Knowledge DB already populated — skipping seed
+[2026-05-02 12:48:44] [INFO    ] httpx: HTTP Request: POST http://localhost:11434/api/embed "HTTP/1.1 200 OK"
+[2026-05-02 12:48:44] [INFO    ] sasha.rag: Rebuilt RAG index with 25 entries.
+[2026-05-02 12:48:44] [INFO    ] sasha.api: RAG index built with 25 entries.
+[2026-05-02 12:48:44] [INFO    ] sasha.api: Sasha AI v2 ready!
+[2026-05-03 18:27:37] [INFO    ] httpx: HTTP Request: GET http://localhost:11434/api/tags "HTTP/1.1 200 OK"

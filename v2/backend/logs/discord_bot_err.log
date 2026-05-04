@@ -679,3 +679,26 @@ aiohttp.client_exceptions.ClientConnectorError: Cannot connect to host gateway-u
 [2026-05-01 20:30:30] [INFO    ] discord.gateway: Shard ID None has successfully RESUMED session 97b1e5fcfb0d197b3aa1fc6dbf2f5dcf.
 [2026-05-01 21:26:32] [INFO    ] discord.gateway: Shard ID None has successfully RESUMED session 97b1e5fcfb0d197b3aa1fc6dbf2f5dcf.
 [2026-05-01 23:46:33] [INFO    ] discord.gateway: Shard ID None has successfully RESUMED session 97b1e5fcfb0d197b3aa1fc6dbf2f5dcf.
+[2026-05-02 12:48:36] [INFO    ] discord.client: logging in using static token
+[2026-05-02 12:48:38] [INFO    ] discord.gateway: Shard ID None has connected to Gateway (Session ID: afe634f51ce40974c3bd7edb3c848504).
+[2026-05-02 14:52:18] [INFO    ] discord.gateway: Shard ID None has successfully RESUMED session afe634f51ce40974c3bd7edb3c848504.
+[2026-05-02 16:19:29] [INFO    ] discord.gateway: Shard ID None has successfully RESUMED session afe634f51ce40974c3bd7edb3c848504.
+[2026-05-03 10:32:05] [WARNING ] discord.gateway: Shard ID None has stopped responding to the gateway. Closing and restarting.
+[2026-05-03 10:32:05] [INFO    ] discord.gateway: Shard ID None session has been invalidated.
+[2026-05-03 10:32:11] [INFO    ] discord.gateway: Shard ID None has connected to Gateway (Session ID: e53e0119f4d19b359e8c07acba420153).
+[2026-05-03 11:45:25] [INFO    ] discord.gateway: Shard ID None has successfully RESUMED session e53e0119f4d19b359e8c07acba420153.
+[2026-05-03 12:39:56] [INFO    ] discord.gateway: Shard ID None has successfully RESUMED session e53e0119f4d19b359e8c07acba420153.
+[2026-05-03 16:26:56] [INFO    ] discord.gateway: Shard ID None has successfully RESUMED session e53e0119f4d19b359e8c07acba420153.
+[2026-05-03 17:11:03] [INFO    ] discord.gateway: Shard ID None has successfully RESUMED session e53e0119f4d19b359e8c07acba420153.
+[2026-05-03 19:05:19] [INFO    ] discord.gateway: Shard ID None has successfully RESUMED session e53e0119f4d19b359e8c07acba420153.
+[2026-05-04 07:54:55] [WARNING ] discord.gateway: Shard ID None has stopped responding to the gateway. Closing and restarting.
+[2026-05-04 07:54:55] [INFO    ] discord.gateway: Shard ID None session has been invalidated.
+[2026-05-04 07:55:01] [INFO    ] discord.gateway: Shard ID None has connected to Gateway (Session ID: 56b155a8c9a35507b1047e4304f979aa).
+[2026-05-04 08:13:18] [INFO    ] discord.gateway: Shard ID None has successfully RESUMED session 56b155a8c9a35507b1047e4304f979aa.
+[2026-05-04 08:47:08] [INFO    ] discord.gateway: Shard ID None has successfully RESUMED session 56b155a8c9a35507b1047e4304f979aa.
+[2026-05-04 11:19:06] [INFO    ] discord.gateway: Shard ID None has successfully RESUMED session 56b155a8c9a35507b1047e4304f979aa.
+[2026-05-04 12:00:56] [INFO    ] discord.gateway: Shard ID None has successfully RESUMED session 56b155a8c9a35507b1047e4304f979aa.
+[2026-05-04 12:23:20] [INFO    ] discord.gateway: Shard ID None has successfully RESUMED session 56b155a8c9a35507b1047e4304f979aa.
+[2026-05-04 15:03:03] [INFO    ] discord.gateway: Shard ID None has successfully RESUMED session 56b155a8c9a35507b1047e4304f979aa.
+[2026-05-04 15:44:21] [INFO    ] discord.gateway: Shard ID None has successfully RESUMED session 56b155a8c9a35507b1047e4304f979aa.
+[2026-05-04 16:33:14] [INFO    ] discord.gateway: Shard ID None has successfully RESUMED session 56b155a8c9a35507b1047e4304f979aa.
