@@ -1,0 +1,26 @@
+[
+  {
+    "user_message": "What is Erin's last name?",
+    "assistant_response": "Erin's last name is Skidds.",
+    "timestamp": "2026-03-01T18:24:48.533194",
+    "chat_id": "widget-1771805860293"
+  },
+  {
+    "user_message": "Hola aue puedes hacer",
+    "assistant_response": "\u00a1Hola! Soy Erin Skidds, y puedo ayudarte con una variedad de cosas. Aqu\u00ed te dejo un resumen de lo que puedo hacer:\n\n1. **Informaci\u00f3n sobre proyectos**: Puedo proporcionarte detalles sobre mis proyectos pasados y presentes.\n2. **Tecnolog\u00edas utilizadas**: Me encanta hablar sobre las tecnolog\u00edas que uso, como bases de datos, plataformas en la nube, y otros lenguajes y frameworks.\n3. **GitHub y proyectos personales**: Puedo compartir informaci\u00f3n sobre mis proyectos en GitHub.\n4. **Asesoramiento t\u00e9cnico**: Si tienes preguntas sobre c\u00f3mo resolver problemas t\u00e9cnicos o mejorar tus habilidades, no dudes en preguntar.\n5. **Contacto profesional**: Puedo ayudarte a entender c\u00f3mo establecer contactos profesionales y mantener relaciones de negocios.\n\n\u00bfEn qu\u00e9 puedo ayudarte hoy?",
+    "timestamp": "2026-03-23T14:21:17.363053",
+    "chat_id": "2uonqd33fq6"
+  },
+  {
+    "user_message": "Tell me about Erin's most complex project",
+    "assistant_response": "Erin's most complex project to date is the development of Sasha AI, a personal AI chatbot. This project combines her skills in bot creation, language processing, and website development into one comprehensive application. Built with Python, FastAPI, and Ollama, Sasha AI aims to learn about Erin so that visitors can ask questions and gain insights into her work and life.\n\nThe challenge lies not just in building a functional chatbot but in making it conversational and contextually aware. Erin has to ensure that the bot understands natural language queries, remembers previous interactions, and provides accurate and helpful responses. Additionally, she's working on integrating language learning models with the bot to enhance its capabilities further.\n\nThis project is particularly special to Erin because it serves as a digital family heirloom. She plans to keep it running for years to come, allowing future generations to learn about their mother through this AI companion. It\u2019s a testament to her passion for technology and her commitment to creating meaningful projects that have lasting impacts.",
+    "timestamp": "2026-04-14T12:59:53.694441",
+    "chat_id": "ijljevk77m"
+  },
+  {
+    "user_message": "Who is she, and what she has worked on?",
+    "assistant_response": "Erin is a Full-Stack Engineer with over 5 years of professional experience. She specializes in building bots, connecting language learning models to those bots, and website development. Erin's work involves both front-end and back-end coding. One of her notable projects is Sasha AI, a personal AI chatbot built with Python, FastAPI, and Ollama. The goal of this project is for it to learn about Erin so visitors to her portfolio can ask questions and learn more about her. She also plans to keep it as a digital family heirloom, allowing future generations to learn about their mother through the bot.",
+    "timestamp": "2026-04-29T14:03:46.407370",
+    "chat_id": "widget-1777489359039"
+  }
+]

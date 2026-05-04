@@ -7,3 +7,673 @@
 [2026-03-01 17:27:27] [WARNING ] discord.client: PyNaCl is not installed, voice will NOT be supported
 [2026-03-01 17:39:23] [WARNING ] discord.client: PyNaCl is not installed, voice will NOT be supported
 [2026-03-01 17:59:12] [WARNING ] discord.client: PyNaCl is not installed, voice will NOT be supported
+[2026-03-02 07:54:16] [WARNING ] discord.gateway: Shard ID None has stopped responding to the gateway. Closing and restarting.
+[2026-03-02 19:29:19] [WARNING ] discord.client: PyNaCl is not installed, voice will NOT be supported
+[2026-03-02 19:29:19] [WARNING ] sasha.discord: Network not ready, retrying in 5s...
+[2026-03-02 19:29:24] [WARNING ] sasha.discord: Network not ready, retrying in 10s...
+[2026-03-03 08:05:44] [WARNING ] discord.gateway: Shard ID None has stopped responding to the gateway. Closing and restarting.
+[2026-03-03 12:17:54] [WARNING ] discord.gateway: Can't keep up, shard ID None websocket is 12.2s behind.
+[2026-03-03 13:00:04] [WARNING ] discord.client: PyNaCl is not installed, voice will NOT be supported
+[2026-03-03 13:00:05] [WARNING ] sasha.discord: Network not ready, retrying in 5s...
+[2026-03-03 13:00:10] [WARNING ] sasha.discord: Network not ready, retrying in 10s...
+[2026-03-03 19:10:01] [WARNING ] discord.client: PyNaCl is not installed, voice will NOT be supported
+[2026-03-03 19:10:01] [WARNING ] sasha.discord: Network not ready, retrying in 5s...
+[2026-03-03 19:10:06] [WARNING ] sasha.discord: Network not ready, retrying in 10s...
+[2026-03-04 08:05:16] [WARNING ] discord.client: PyNaCl is not installed, voice will NOT be supported
+[2026-03-04 08:05:16] [WARNING ] sasha.discord: Network not ready, retrying in 5s...
+[2026-03-04 08:05:21] [WARNING ] sasha.discord: Network not ready, retrying in 10s...
+[2026-03-05 08:16:39] [WARNING ] discord.gateway: Shard ID None has stopped responding to the gateway. Closing and restarting.
+[2026-03-06 08:20:27] [WARNING ] discord.gateway: Shard ID None has stopped responding to the gateway. Closing and restarting.
+[2026-03-07 11:03:38] [ERROR   ] asyncio: Task exception was never retrieved
+future: <Task finished name='Task-11' coro=<rotate_status() done, defined at f:\repos\Sasha-AI\v2\backend\discord_bot.py:417> exception=ConnectionResetError('Cannot write to closing transport')>
+Traceback (most recent call last):
+  File "f:\repos\Sasha-AI\v2\backend\discord_bot.py", line 427, in rotate_status
+    await bot.change_presence(activity=discord.CustomActivity(name=choice))
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\client.py", line 2040, in change_presence
+    await self.ws.change_presence(activity=activity, status=status_str)
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\gateway.py", line 701, in change_presence
+    await self.send(sent)
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\gateway.py", line 655, in send
+    await self.socket.send_str(data)
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client_ws.py", line 165, in send_str
+    await self._writer.send(data, binary=False, compress=compress)
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\http_websocket.py", line 729, in send
+    await self._send_frame(message, WSMsgType.TEXT, compress)
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\http_websocket.py", line 675, in _send_frame
+    self._write(header + mask + message)
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\http_websocket.py", line 702, in _write
+    raise ConnectionResetError("Cannot write to closing transport")
+ConnectionResetError: Cannot write to closing transport
+[2026-03-07 11:03:39] [ERROR   ] asyncio: Task exception was never retrieved
+future: <Task finished name='Task-1229' coro=<rotate_status() done, defined at f:\repos\Sasha-AI\v2\backend\discord_bot.py:417> exception=ConnectionResetError('Cannot write to closing transport')>
+Traceback (most recent call last):
+  File "f:\repos\Sasha-AI\v2\backend\discord_bot.py", line 427, in rotate_status
+    await bot.change_presence(activity=discord.CustomActivity(name=choice))
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\client.py", line 2040, in change_presence
+    await self.ws.change_presence(activity=activity, status=status_str)
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\gateway.py", line 701, in change_presence
+    await self.send(sent)
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\gateway.py", line 655, in send
+    await self.socket.send_str(data)
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client_ws.py", line 165, in send_str
+    await self._writer.send(data, binary=False, compress=compress)
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\http_websocket.py", line 729, in send
+    await self._send_frame(message, WSMsgType.TEXT, compress)
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\http_websocket.py", line 675, in _send_frame
+    self._write(header + mask + message)
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\http_websocket.py", line 702, in _write
+    raise ConnectionResetError("Cannot write to closing transport")
+ConnectionResetError: Cannot write to closing transport
+[2026-03-07 11:03:39] [ERROR   ] asyncio: Task exception was never retrieved
+future: <Task finished name='Task-2587' coro=<rotate_status() done, defined at f:\repos\Sasha-AI\v2\backend\discord_bot.py:417> exception=ConnectionResetError('Cannot write to closing transport')>
+Traceback (most recent call last):
+  File "f:\repos\Sasha-AI\v2\backend\discord_bot.py", line 427, in rotate_status
+    await bot.change_presence(activity=discord.CustomActivity(name=choice))
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\client.py", line 2040, in change_presence
+    await self.ws.change_presence(activity=activity, status=status_str)
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\gateway.py", line 701, in change_presence
+    await self.send(sent)
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\gateway.py", line 655, in send
+    await self.socket.send_str(data)
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client_ws.py", line 165, in send_str
+    await self._writer.send(data, binary=False, compress=compress)
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\http_websocket.py", line 729, in send
+    await self._send_frame(message, WSMsgType.TEXT, compress)
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\http_websocket.py", line 675, in _send_frame
+    self._write(header + mask + message)
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\http_websocket.py", line 702, in _write
+    raise ConnectionResetError("Cannot write to closing transport")
+ConnectionResetError: Cannot write to closing transport
+[2026-03-08 12:29:00] [WARNING ] discord.gateway: Shard ID None has stopped responding to the gateway. Closing and restarting.
+[2026-03-08 21:41:21] [WARNING ] discord.client: PyNaCl is not installed, voice will NOT be supported
+[2026-03-08 21:41:21] [WARNING ] sasha.discord: Network not ready, retrying in 5s...
+[2026-03-08 21:41:26] [WARNING ] sasha.discord: Network not ready, retrying in 10s...
+[2026-03-09 08:13:49] [WARNING ] discord.client: PyNaCl is not installed, voice will NOT be supported
+[2026-03-09 08:13:49] [WARNING ] sasha.discord: Network not ready, retrying in 5s...
+[2026-03-09 08:13:54] [WARNING ] sasha.discord: Network not ready, retrying in 10s...
+[2026-03-09 10:54:56] [WARNING ] discord.client: PyNaCl is not installed, voice will NOT be supported
+[2026-03-09 10:54:56] [WARNING ] sasha.discord: Network not ready, retrying in 5s...
+[2026-03-09 10:55:01] [WARNING ] sasha.discord: Network not ready, retrying in 10s...
+[2026-03-09 11:16:30] [WARNING ] discord.gateway: Can't keep up, shard ID None websocket is 40.7s behind.
+[2026-03-10 08:16:07] [ERROR   ] asyncio: Task exception was never retrieved
+future: <Task finished name='Task-11' coro=<rotate_status() done, defined at f:\repos\Sasha-AI\v2\backend\discord_bot.py:417> exception=ConnectionResetError('Cannot write to closing transport')>
+Traceback (most recent call last):
+  File "f:\repos\Sasha-AI\v2\backend\discord_bot.py", line 427, in rotate_status
+    await bot.change_presence(activity=discord.CustomActivity(name=choice))
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\client.py", line 2040, in change_presence
+    await self.ws.change_presence(activity=activity, status=status_str)
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\gateway.py", line 701, in change_presence
+    await self.send(sent)
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\gateway.py", line 655, in send
+    await self.socket.send_str(data)
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client_ws.py", line 165, in send_str
+    await self._writer.send(data, binary=False, compress=compress)
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\http_websocket.py", line 729, in send
+    await self._send_frame(message, WSMsgType.TEXT, compress)
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\http_websocket.py", line 675, in _send_frame
+    self._write(header + mask + message)
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\http_websocket.py", line 702, in _write
+    raise ConnectionResetError("Cannot write to closing transport")
+ConnectionResetError: Cannot write to closing transport
+[2026-03-11 08:05:56] [WARNING ] discord.gateway: Shard ID None has stopped responding to the gateway. Closing and restarting.
+[2026-03-11 08:38:29] [WARNING ] discord.client: PyNaCl is not installed, voice will NOT be supported
+[2026-03-11 08:38:29] [WARNING ] sasha.discord: Network not ready, retrying in 5s...
+[2026-03-11 08:38:34] [WARNING ] sasha.discord: Network not ready, retrying in 10s...
+[2026-03-11 08:39:29] [WARNING ] discord.client: PyNaCl is not installed, voice will NOT be supported
+[2026-03-11 08:39:29] [WARNING ] sasha.discord: Network not ready, retrying in 5s...
+[2026-03-11 08:39:34] [WARNING ] sasha.discord: Network not ready, retrying in 10s...
+[2026-03-12 07:56:57] [WARNING ] discord.client: PyNaCl is not installed, voice will NOT be supported
+[2026-03-12 07:56:57] [WARNING ] sasha.discord: Network not ready, retrying in 5s...
+[2026-03-12 07:57:02] [WARNING ] sasha.discord: Network not ready, retrying in 10s...
+[2026-03-13 08:02:33] [WARNING ] discord.client: PyNaCl is not installed, voice will NOT be supported
+[2026-03-13 08:02:33] [WARNING ] sasha.discord: Network not ready, retrying in 5s...
+[2026-03-13 08:02:38] [WARNING ] sasha.discord: Network not ready, retrying in 10s...
+[2026-03-16 08:00:56] [ERROR   ] asyncio: Task exception was never retrieved
+future: <Task finished name='Task-11' coro=<rotate_status() done, defined at f:\repos\Sasha-AI\v2\backend\discord_bot.py:417> exception=ConnectionResetError('Cannot write to closing transport')>
+Traceback (most recent call last):
+  File "f:\repos\Sasha-AI\v2\backend\discord_bot.py", line 427, in rotate_status
+    await bot.change_presence(activity=discord.CustomActivity(name=choice))
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\client.py", line 2040, in change_presence
+    await self.ws.change_presence(activity=activity, status=status_str)
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\gateway.py", line 701, in change_presence
+    await self.send(sent)
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\gateway.py", line 655, in send
+    await self.socket.send_str(data)
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client_ws.py", line 165, in send_str
+    await self._writer.send(data, binary=False, compress=compress)
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\http_websocket.py", line 729, in send
+    await self._send_frame(message, WSMsgType.TEXT, compress)
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\http_websocket.py", line 675, in _send_frame
+    self._write(header + mask + message)
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\http_websocket.py", line 702, in _write
+    raise ConnectionResetError("Cannot write to closing transport")
+ConnectionResetError: Cannot write to closing transport
+[2026-03-16 08:00:56] [ERROR   ] discord.client: Attempting a reconnect in 1.83s
+Traceback (most recent call last):
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1203, in _create_direct_connection
+    hosts = await self._resolve_host(host, port, traces=traces)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 880, in _resolve_host
+    return await asyncio.shield(resolved_host_task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 917, in _resolve_host_with_throttle
+    addrs = await self._resolver.resolve(host, port, family=self._family)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\resolver.py", line 33, in resolve
+    infos = await self._loop.getaddrinfo(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\asyncio\base_events.py", line 900, in getaddrinfo
+    return await self.run_in_executor(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\concurrent\futures\thread.py", line 59, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\socket.py", line 976, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+socket.gaierror: [Errno 11001] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\client.py", line 656, in connect
+    self.ws = await asyncio.wait_for(coro, timeout=60.0)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\asyncio\tasks.py", line 520, in wait_for
+    return await fut
+           ^^^^^^^^^
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\gateway.py", line 372, in from_client
+    socket = await client.http.ws_connect(str(url))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\http.py", line 537, in ws_connect
+    return await self.__session.ws_connect(url, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client.py", line 835, in _ws_connect
+    resp = await self.request(
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client.py", line 581, in _request
+    conn = await self._connector.connect(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 544, in connect
+    proto = await self._create_connection(req, traces, timeout)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 944, in _create_connection
+    _, proto = await self._create_direct_connection(req, traces, timeout)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1209, in _create_direct_connection
+    raise ClientConnectorError(req.connection_key, exc) from exc
+aiohttp.client_exceptions.ClientConnectorError: Cannot connect to host gateway-us-east1-c.discord.gg:443 ssl:default [getaddrinfo failed]
+[2026-03-17 12:26:01] [WARNING ] discord.gateway: Shard ID None has stopped responding to the gateway. Closing and restarting.
+[2026-03-18 07:56:45] [WARNING ] discord.client: PyNaCl is not installed, voice will NOT be supported
+[2026-03-18 07:56:45] [WARNING ] sasha.discord: Network not ready, retrying in 5s...
+[2026-03-18 07:56:50] [WARNING ] sasha.discord: Network not ready, retrying in 10s...
+[2026-03-20 16:24:07] [WARNING ] discord.client: PyNaCl is not installed, voice will NOT be supported
+[2026-03-20 16:24:07] [WARNING ] sasha.discord: Network not ready, retrying in 5s...
+[2026-03-20 16:24:12] [WARNING ] sasha.discord: Network not ready, retrying in 10s...
+[2026-03-21 19:14:03] [WARNING ] discord.client: PyNaCl is not installed, voice will NOT be supported
+[2026-03-21 19:14:03] [WARNING ] sasha.discord: Network not ready, retrying in 5s...
+[2026-03-21 19:14:08] [WARNING ] sasha.discord: Network not ready, retrying in 10s...
+[2026-03-21 19:57:37] [ERROR   ] discord.ext.commands.bot: Ignoring exception in command None
+discord.ext.commands.errors.CommandNotFound: Command "prune" is not found
+[2026-03-21 20:01:38] [ERROR   ] discord.ext.commands.bot: Ignoring exception in command None
+discord.ext.commands.errors.CommandNotFound: Command "prune" is not found
+[2026-03-21 20:02:41] [ERROR   ] discord.ext.commands.bot: Ignoring exception in command None
+discord.ext.commands.errors.CommandNotFound: Command "prune" is not found
+[2026-03-21 22:24:36] [ERROR   ] discord.ext.commands.bot: Ignoring exception in command None
+discord.ext.commands.errors.CommandNotFound: Command "prune" is not found
+[2026-03-21 23:11:27] [WARNING ] discord.client: PyNaCl is not installed, voice will NOT be supported
+[2026-03-21 23:11:27] [WARNING ] sasha.discord: Network not ready, retrying in 5s...
+[2026-03-21 23:11:32] [WARNING ] sasha.discord: Network not ready, retrying in 10s...
+[2026-03-23 07:02:51] [WARNING ] discord.client: PyNaCl is not installed, voice will NOT be supported
+[2026-03-23 07:02:51] [WARNING ] sasha.discord: Network not ready, retrying in 5s...
+[2026-03-23 07:02:56] [WARNING ] sasha.discord: Network not ready, retrying in 10s...
+[2026-03-23 07:38:24] [WARNING ] discord.client: PyNaCl is not installed, voice will NOT be supported
+[2026-03-23 07:38:25] [WARNING ] sasha.discord: Network not ready, retrying in 5s...
+[2026-03-23 07:38:30] [WARNING ] sasha.discord: Network not ready, retrying in 10s...
+[2026-03-24 05:00:39] [WARNING ] discord.client: PyNaCl is not installed, voice will NOT be supported
+[2026-03-24 05:00:39] [WARNING ] sasha.discord: Network not ready, retrying in 5s...
+[2026-03-24 05:00:44] [WARNING ] sasha.discord: Network not ready, retrying in 10s...
+[2026-03-25 08:02:50] [WARNING ] discord.gateway: Shard ID None has stopped responding to the gateway. Closing and restarting.
+[2026-03-27 06:05:05] [ERROR   ] asyncio: Task exception was never retrieved
+future: <Task finished name='Task-11' coro=<rotate_status() done, defined at f:\repos\Sasha-AI\v2\backend\discord_bot.py:417> exception=ConnectionResetError('Cannot write to closing transport')>
+Traceback (most recent call last):
+  File "f:\repos\Sasha-AI\v2\backend\discord_bot.py", line 427, in rotate_status
+    await bot.change_presence(activity=discord.CustomActivity(name=choice))
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\client.py", line 2040, in change_presence
+    await self.ws.change_presence(activity=activity, status=status_str)
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\gateway.py", line 701, in change_presence
+    await self.send(sent)
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\gateway.py", line 655, in send
+    await self.socket.send_str(data)
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client_ws.py", line 165, in send_str
+    await self._writer.send(data, binary=False, compress=compress)
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\http_websocket.py", line 729, in send
+    await self._send_frame(message, WSMsgType.TEXT, compress)
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\http_websocket.py", line 675, in _send_frame
+    self._write(header + mask + message)
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\http_websocket.py", line 702, in _write
+    raise ConnectionResetError("Cannot write to closing transport")
+ConnectionResetError: Cannot write to closing transport
+[2026-03-27 06:05:05] [ERROR   ] asyncio: Task exception was never retrieved
+future: <Task finished name='Task-1307' coro=<rotate_status() done, defined at f:\repos\Sasha-AI\v2\backend\discord_bot.py:417> exception=ConnectionResetError('Cannot write to closing transport')>
+Traceback (most recent call last):
+  File "f:\repos\Sasha-AI\v2\backend\discord_bot.py", line 427, in rotate_status
+    await bot.change_presence(activity=discord.CustomActivity(name=choice))
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\client.py", line 2040, in change_presence
+    await self.ws.change_presence(activity=activity, status=status_str)
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\gateway.py", line 701, in change_presence
+    await self.send(sent)
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\gateway.py", line 655, in send
+    await self.socket.send_str(data)
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client_ws.py", line 165, in send_str
+    await self._writer.send(data, binary=False, compress=compress)
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\http_websocket.py", line 729, in send
+    await self._send_frame(message, WSMsgType.TEXT, compress)
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\http_websocket.py", line 675, in _send_frame
+    self._write(header + mask + message)
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\http_websocket.py", line 702, in _write
+    raise ConnectionResetError("Cannot write to closing transport")
+ConnectionResetError: Cannot write to closing transport
+[2026-03-27 06:05:05] [ERROR   ] asyncio: Task exception was never retrieved
+future: <Task finished name='Task-1892' coro=<rotate_status() done, defined at f:\repos\Sasha-AI\v2\backend\discord_bot.py:417> exception=ConnectionResetError('Cannot write to closing transport')>
+Traceback (most recent call last):
+  File "f:\repos\Sasha-AI\v2\backend\discord_bot.py", line 427, in rotate_status
+    await bot.change_presence(activity=discord.CustomActivity(name=choice))
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\client.py", line 2040, in change_presence
+    await self.ws.change_presence(activity=activity, status=status_str)
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\gateway.py", line 701, in change_presence
+    await self.send(sent)
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\gateway.py", line 655, in send
+    await self.socket.send_str(data)
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client_ws.py", line 165, in send_str
+    await self._writer.send(data, binary=False, compress=compress)
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\http_websocket.py", line 729, in send
+    await self._send_frame(message, WSMsgType.TEXT, compress)
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\http_websocket.py", line 675, in _send_frame
+    self._write(header + mask + message)
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\http_websocket.py", line 702, in _write
+    raise ConnectionResetError("Cannot write to closing transport")
+ConnectionResetError: Cannot write to closing transport
+[2026-03-27 06:05:05] [ERROR   ] discord.client: Attempting a reconnect in 1.02s
+Traceback (most recent call last):
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1203, in _create_direct_connection
+    hosts = await self._resolve_host(host, port, traces=traces)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 880, in _resolve_host
+    return await asyncio.shield(resolved_host_task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 917, in _resolve_host_with_throttle
+    addrs = await self._resolver.resolve(host, port, family=self._family)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\resolver.py", line 33, in resolve
+    infos = await self._loop.getaddrinfo(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\asyncio\base_events.py", line 900, in getaddrinfo
+    return await self.run_in_executor(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\concurrent\futures\thread.py", line 59, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\socket.py", line 976, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+socket.gaierror: [Errno 11001] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\client.py", line 656, in connect
+    self.ws = await asyncio.wait_for(coro, timeout=60.0)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\asyncio\tasks.py", line 520, in wait_for
+    return await fut
+           ^^^^^^^^^
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\gateway.py", line 372, in from_client
+    socket = await client.http.ws_connect(str(url))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\http.py", line 537, in ws_connect
+    return await self.__session.ws_connect(url, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client.py", line 835, in _ws_connect
+    resp = await self.request(
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client.py", line 581, in _request
+    conn = await self._connector.connect(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 544, in connect
+    proto = await self._create_connection(req, traces, timeout)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 944, in _create_connection
+    _, proto = await self._create_direct_connection(req, traces, timeout)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1209, in _create_direct_connection
+    raise ClientConnectorError(req.connection_key, exc) from exc
+aiohttp.client_exceptions.ClientConnectorError: Cannot connect to host gateway-us-east1-c.discord.gg:443 ssl:default [getaddrinfo failed]
+[2026-03-27 07:22:50] [WARNING ] discord.client: PyNaCl is not installed, voice will NOT be supported
+[2026-03-27 07:22:50] [WARNING ] sasha.discord: Network not ready, retrying in 5s...
+[2026-03-27 07:22:55] [WARNING ] sasha.discord: Network not ready, retrying in 10s...
+[2026-03-28 12:25:39] [WARNING ] discord.client: PyNaCl is not installed, voice will NOT be supported
+[2026-03-28 12:25:39] [WARNING ] sasha.discord: Network not ready, retrying in 5s...
+[2026-03-28 12:25:44] [WARNING ] sasha.discord: Network not ready, retrying in 10s...
+[2026-03-30 00:02:22] [ERROR   ] asyncio: Task exception was never retrieved
+future: <Task finished name='Task-11' coro=<rotate_status() done, defined at f:\repos\Sasha-AI\v2\backend\discord_bot.py:417> exception=ConnectionResetError('Cannot write to closing transport')>
+Traceback (most recent call last):
+  File "f:\repos\Sasha-AI\v2\backend\discord_bot.py", line 427, in rotate_status
+    await bot.change_presence(activity=discord.CustomActivity(name=choice))
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\client.py", line 2040, in change_presence
+    await self.ws.change_presence(activity=activity, status=status_str)
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\gateway.py", line 701, in change_presence
+    await self.send(sent)
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\gateway.py", line 655, in send
+    await self.socket.send_str(data)
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client_ws.py", line 165, in send_str
+    await self._writer.send(data, binary=False, compress=compress)
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\http_websocket.py", line 729, in send
+    await self._send_frame(message, WSMsgType.TEXT, compress)
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\http_websocket.py", line 675, in _send_frame
+    self._write(header + mask + message)
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\http_websocket.py", line 702, in _write
+    raise ConnectionResetError("Cannot write to closing transport")
+ConnectionResetError: Cannot write to closing transport
+[2026-03-30 00:02:22] [ERROR   ] discord.client: Attempting a reconnect in 1.27s
+Traceback (most recent call last):
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1203, in _create_direct_connection
+    hosts = await self._resolve_host(host, port, traces=traces)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 880, in _resolve_host
+    return await asyncio.shield(resolved_host_task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 917, in _resolve_host_with_throttle
+    addrs = await self._resolver.resolve(host, port, family=self._family)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\resolver.py", line 33, in resolve
+    infos = await self._loop.getaddrinfo(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\asyncio\base_events.py", line 900, in getaddrinfo
+    return await self.run_in_executor(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\concurrent\futures\thread.py", line 59, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\socket.py", line 976, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+socket.gaierror: [Errno 11001] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\client.py", line 656, in connect
+    self.ws = await asyncio.wait_for(coro, timeout=60.0)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\asyncio\tasks.py", line 520, in wait_for
+    return await fut
+           ^^^^^^^^^
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\gateway.py", line 372, in from_client
+    socket = await client.http.ws_connect(str(url))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\http.py", line 537, in ws_connect
+    return await self.__session.ws_connect(url, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client.py", line 835, in _ws_connect
+    resp = await self.request(
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client.py", line 581, in _request
+    conn = await self._connector.connect(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 544, in connect
+    proto = await self._create_connection(req, traces, timeout)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 944, in _create_connection
+    _, proto = await self._create_direct_connection(req, traces, timeout)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1209, in _create_direct_connection
+    raise ClientConnectorError(req.connection_key, exc) from exc
+aiohttp.client_exceptions.ClientConnectorError: Cannot connect to host gateway-us-east1-d.discord.gg:443 ssl:default [getaddrinfo failed]
+[2026-03-30 05:46:09] [WARNING ] discord.client: PyNaCl is not installed, voice will NOT be supported
+[2026-03-30 05:46:09] [WARNING ] sasha.discord: Network not ready, retrying in 5s...
+[2026-03-30 05:46:14] [WARNING ] sasha.discord: Network not ready, retrying in 10s...
+[2026-03-30 17:06:40] [WARNING ] discord.client: PyNaCl is not installed, voice will NOT be supported
+[2026-03-30 17:06:40] [WARNING ] sasha.discord: Network not ready, retrying in 5s...
+[2026-03-30 17:06:45] [WARNING ] sasha.discord: Network not ready, retrying in 10s...
+[2026-03-30 17:56:28] [WARNING ] discord.client: PyNaCl is not installed, voice will NOT be supported
+[2026-03-30 17:56:28] [WARNING ] sasha.discord: Network not ready, retrying in 5s...
+[2026-03-30 17:56:33] [WARNING ] sasha.discord: Network not ready, retrying in 10s...
+[2026-03-31 11:46:14] [WARNING ] discord.client: PyNaCl is not installed, voice will NOT be supported
+[2026-03-31 11:46:14] [WARNING ] sasha.discord: Network not ready, retrying in 5s...
+[2026-03-31 11:46:19] [WARNING ] sasha.discord: Network not ready, retrying in 10s...
+[2026-04-01 07:47:29] [WARNING ] discord.gateway: Shard ID None has stopped responding to the gateway. Closing and restarting.
+[2026-04-01 08:22:31] [WARNING ] discord.client: PyNaCl is not installed, voice will NOT be supported
+[2026-04-01 08:22:31] [WARNING ] sasha.discord: Network not ready, retrying in 5s...
+[2026-04-01 08:22:36] [WARNING ] sasha.discord: Network not ready, retrying in 10s...
+[2026-04-01 08:23:56] [WARNING ] discord.client: PyNaCl is not installed, voice will NOT be supported
+[2026-04-01 08:23:56] [WARNING ] sasha.discord: Network not ready, retrying in 5s...
+[2026-04-01 08:24:01] [WARNING ] sasha.discord: Network not ready, retrying in 10s...
+[2026-04-01 08:24:39] [WARNING ] discord.client: PyNaCl is not installed, voice will NOT be supported
+[2026-04-01 08:24:39] [WARNING ] sasha.discord: Network not ready, retrying in 5s...
+[2026-04-02 07:26:58] [WARNING ] discord.gateway: Shard ID None has stopped responding to the gateway. Closing and restarting.
+[2026-04-03 07:59:56] [WARNING ] discord.client: PyNaCl is not installed, voice will NOT be supported
+[2026-04-03 07:59:56] [WARNING ] sasha.discord: Network not ready, retrying in 5s...
+[2026-04-03 08:00:01] [WARNING ] sasha.discord: Network not ready, retrying in 10s...
+[2026-04-04 19:57:29] [WARNING ] discord.client: PyNaCl is not installed, voice will NOT be supported
+[2026-04-04 19:57:29] [WARNING ] sasha.discord: Network not ready, retrying in 5s...
+[2026-04-04 19:57:34] [WARNING ] sasha.discord: Network not ready, retrying in 10s...
+[2026-04-06 09:57:07] [WARNING ] discord.client: PyNaCl is not installed, voice will NOT be supported
+[2026-04-06 09:57:07] [WARNING ] sasha.discord: Network not ready, retrying in 5s...
+[2026-04-06 09:57:12] [WARNING ] sasha.discord: Network not ready, retrying in 10s...
+[2026-04-07 07:36:22] [WARNING ] discord.client: PyNaCl is not installed, voice will NOT be supported
+[2026-04-07 07:36:22] [WARNING ] sasha.discord: Network not ready, retrying in 5s...
+[2026-04-07 07:36:27] [WARNING ] sasha.discord: Network not ready, retrying in 10s...
+[2026-04-08 07:49:29] [WARNING ] discord.client: PyNaCl is not installed, voice will NOT be supported
+[2026-04-08 07:49:29] [WARNING ] sasha.discord: Network not ready, retrying in 5s...
+[2026-04-08 07:49:34] [WARNING ] sasha.discord: Network not ready, retrying in 10s...
+[2026-04-09 07:59:37] [WARNING ] discord.client: PyNaCl is not installed, voice will NOT be supported
+[2026-04-09 07:59:37] [WARNING ] sasha.discord: Network not ready, retrying in 5s...
+[2026-04-09 07:59:42] [WARNING ] sasha.discord: Network not ready, retrying in 10s...
+[2026-04-09 16:57:06] [WARNING ] discord.gateway: Shard ID None has stopped responding to the gateway. Closing and restarting.
+[2026-04-10 07:19:32] [WARNING ] discord.gateway: Shard ID None has stopped responding to the gateway. Closing and restarting.
+[2026-04-11 09:19:05] [WARNING ] discord.client: PyNaCl is not installed, voice will NOT be supported
+[2026-04-11 09:19:05] [WARNING ] sasha.discord: Network not ready, retrying in 5s...
+[2026-04-11 09:19:10] [WARNING ] sasha.discord: Network not ready, retrying in 10s...
+[2026-04-11 22:36:55] [ERROR   ] discord.ext.commands.bot: Ignoring exception in command None
+discord.ext.commands.errors.CommandNotFound: Command "prune" is not found
+[2026-04-11 22:50:52] [ERROR   ] discord.ext.commands.bot: Ignoring exception in command None
+discord.ext.commands.errors.CommandNotFound: Command "prune" is not found
+[2026-04-11 22:50:56] [ERROR   ] discord.ext.commands.bot: Ignoring exception in command None
+discord.ext.commands.errors.CommandNotFound: Command "prune" is not found
+[2026-04-11 22:51:00] [ERROR   ] discord.ext.commands.bot: Ignoring exception in command None
+discord.ext.commands.errors.CommandNotFound: Command "prune" is not found
+[2026-04-12 10:53:10] [WARNING ] discord.gateway: Shard ID None has stopped responding to the gateway. Closing and restarting.
+[2026-04-12 14:31:46] [WARNING ] discord.client: PyNaCl is not installed, voice will NOT be supported
+[2026-04-12 14:31:46] [WARNING ] sasha.discord: Network not ready, retrying in 5s...
+[2026-04-12 14:31:51] [WARNING ] sasha.discord: Network not ready, retrying in 10s...
+[2026-04-12 15:07:55] [WARNING ] discord.client: PyNaCl is not installed, voice will NOT be supported
+[2026-04-12 15:07:55] [WARNING ] sasha.discord: Network not ready, retrying in 5s...
+[2026-04-12 15:08:00] [WARNING ] sasha.discord: Network not ready, retrying in 10s...
+[2026-04-13 08:00:38] [WARNING ] discord.gateway: Shard ID None has stopped responding to the gateway. Closing and restarting.
+[2026-04-14 07:43:18] [WARNING ] discord.client: PyNaCl is not installed, voice will NOT be supported
+[2026-04-14 07:43:18] [WARNING ] sasha.discord: Network not ready, retrying in 5s...
+[2026-04-14 07:43:23] [WARNING ] sasha.discord: Network not ready, retrying in 10s...
+[2026-04-15 12:50:33] [WARNING ] discord.client: PyNaCl is not installed, voice will NOT be supported
+[2026-04-15 12:50:34] [WARNING ] sasha.discord: Network not ready, retrying in 5s...
+[2026-04-15 12:50:39] [WARNING ] sasha.discord: Network not ready, retrying in 10s...
+[2026-04-15 14:24:38] [WARNING ] discord.client: PyNaCl is not installed, voice will NOT be supported
+[2026-04-15 14:24:38] [WARNING ] sasha.discord: Network not ready, retrying in 5s...
+[2026-04-15 14:24:43] [WARNING ] sasha.discord: Network not ready, retrying in 10s...
+[2026-04-15 14:25:50] [WARNING ] discord.client: PyNaCl is not installed, voice will NOT be supported
+[2026-04-15 14:25:50] [WARNING ] sasha.discord: Network not ready, retrying in 5s...
+[2026-04-15 14:25:55] [WARNING ] sasha.discord: Network not ready, retrying in 10s...
+[2026-04-16 08:19:20] [WARNING ] discord.gateway: Shard ID None has stopped responding to the gateway. Closing and restarting.
+[2026-04-23 07:56:29] [ERROR   ] asyncio: Task exception was never retrieved
+future: <Task finished name='Task-11' coro=<rotate_status() done, defined at f:\repos\Sasha-AI\v2\backend\discord_bot.py:417> exception=ConnectionResetError('Cannot write to closing transport')>
+Traceback (most recent call last):
+  File "f:\repos\Sasha-AI\v2\backend\discord_bot.py", line 427, in rotate_status
+    await bot.change_presence(activity=discord.CustomActivity(name=choice))
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\client.py", line 2040, in change_presence
+    await self.ws.change_presence(activity=activity, status=status_str)
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\gateway.py", line 701, in change_presence
+    await self.send(sent)
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\gateway.py", line 655, in send
+    await self.socket.send_str(data)
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client_ws.py", line 165, in send_str
+    await self._writer.send(data, binary=False, compress=compress)
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\http_websocket.py", line 729, in send
+    await self._send_frame(message, WSMsgType.TEXT, compress)
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\http_websocket.py", line 675, in _send_frame
+    self._write(header + mask + message)
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\http_websocket.py", line 702, in _write
+    raise ConnectionResetError("Cannot write to closing transport")
+ConnectionResetError: Cannot write to closing transport
+[2026-04-23 07:56:30] [ERROR   ] asyncio: Task exception was never retrieved
+future: <Task finished name='Task-293' coro=<rotate_status() done, defined at f:\repos\Sasha-AI\v2\backend\discord_bot.py:417> exception=ConnectionResetError('Cannot write to closing transport')>
+Traceback (most recent call last):
+  File "f:\repos\Sasha-AI\v2\backend\discord_bot.py", line 427, in rotate_status
+    await bot.change_presence(activity=discord.CustomActivity(name=choice))
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\client.py", line 2040, in change_presence
+    await self.ws.change_presence(activity=activity, status=status_str)
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\gateway.py", line 701, in change_presence
+    await self.send(sent)
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\gateway.py", line 655, in send
+    await self.socket.send_str(data)
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client_ws.py", line 165, in send_str
+    await self._writer.send(data, binary=False, compress=compress)
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\http_websocket.py", line 729, in send
+    await self._send_frame(message, WSMsgType.TEXT, compress)
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\http_websocket.py", line 675, in _send_frame
+    self._write(header + mask + message)
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\http_websocket.py", line 702, in _write
+    raise ConnectionResetError("Cannot write to closing transport")
+ConnectionResetError: Cannot write to closing transport
+[2026-04-24 07:39:28] [WARNING ] discord.gateway: Shard ID None has stopped responding to the gateway. Closing and restarting.
+[2026-04-25 13:55:49] [WARNING ] discord.gateway: Shard ID None has stopped responding to the gateway. Closing and restarting.
+[2026-04-27 16:59:02] [ERROR   ] asyncio: Task exception was never retrieved
+future: <Task finished name='Task-1714' coro=<rotate_status() done, defined at f:\repos\Sasha-AI\v2\backend\discord_bot.py:417> exception=ConnectionResetError('Cannot write to closing transport')>
+Traceback (most recent call last):
+  File "f:\repos\Sasha-AI\v2\backend\discord_bot.py", line 427, in rotate_status
+    await bot.change_presence(activity=discord.CustomActivity(name=choice))
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\client.py", line 2040, in change_presence
+    await self.ws.change_presence(activity=activity, status=status_str)
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\gateway.py", line 701, in change_presence
+    await self.send(sent)
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\gateway.py", line 655, in send
+    await self.socket.send_str(data)
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client_ws.py", line 165, in send_str
+    await self._writer.send(data, binary=False, compress=compress)
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\http_websocket.py", line 729, in send
+    await self._send_frame(message, WSMsgType.TEXT, compress)
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\http_websocket.py", line 675, in _send_frame
+    self._write(header + mask + message)
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\http_websocket.py", line 702, in _write
+    raise ConnectionResetError("Cannot write to closing transport")
+ConnectionResetError: Cannot write to closing transport
+[2026-04-27 16:59:02] [ERROR   ] asyncio: Task exception was never retrieved
+future: <Task finished name='Task-872' coro=<rotate_status() done, defined at f:\repos\Sasha-AI\v2\backend\discord_bot.py:417> exception=ConnectionResetError('Cannot write to closing transport')>
+Traceback (most recent call last):
+  File "f:\repos\Sasha-AI\v2\backend\discord_bot.py", line 427, in rotate_status
+    await bot.change_presence(activity=discord.CustomActivity(name=choice))
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\client.py", line 2040, in change_presence
+    await self.ws.change_presence(activity=activity, status=status_str)
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\gateway.py", line 701, in change_presence
+    await self.send(sent)
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\gateway.py", line 655, in send
+    await self.socket.send_str(data)
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client_ws.py", line 165, in send_str
+    await self._writer.send(data, binary=False, compress=compress)
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\http_websocket.py", line 729, in send
+    await self._send_frame(message, WSMsgType.TEXT, compress)
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\http_websocket.py", line 675, in _send_frame
+    self._write(header + mask + message)
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\http_websocket.py", line 702, in _write
+    raise ConnectionResetError("Cannot write to closing transport")
+ConnectionResetError: Cannot write to closing transport
+[2026-04-27 16:59:02] [ERROR   ] asyncio: Task exception was never retrieved
+future: <Task finished name='Task-3140' coro=<rotate_status() done, defined at f:\repos\Sasha-AI\v2\backend\discord_bot.py:417> exception=ConnectionResetError('Cannot write to closing transport')>
+Traceback (most recent call last):
+  File "f:\repos\Sasha-AI\v2\backend\discord_bot.py", line 427, in rotate_status
+    await bot.change_presence(activity=discord.CustomActivity(name=choice))
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\client.py", line 2040, in change_presence
+    await self.ws.change_presence(activity=activity, status=status_str)
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\gateway.py", line 701, in change_presence
+    await self.send(sent)
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\gateway.py", line 655, in send
+    await self.socket.send_str(data)
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client_ws.py", line 165, in send_str
+    await self._writer.send(data, binary=False, compress=compress)
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\http_websocket.py", line 729, in send
+    await self._send_frame(message, WSMsgType.TEXT, compress)
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\http_websocket.py", line 675, in _send_frame
+    self._write(header + mask + message)
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\http_websocket.py", line 702, in _write
+    raise ConnectionResetError("Cannot write to closing transport")
+ConnectionResetError: Cannot write to closing transport
+[2026-04-27 16:59:02] [ERROR   ] discord.client: Attempting a reconnect in 1.97s
+Traceback (most recent call last):
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1203, in _create_direct_connection
+    hosts = await self._resolve_host(host, port, traces=traces)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 880, in _resolve_host
+    return await asyncio.shield(resolved_host_task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 917, in _resolve_host_with_throttle
+    addrs = await self._resolver.resolve(host, port, family=self._family)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\resolver.py", line 33, in resolve
+    infos = await self._loop.getaddrinfo(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\asyncio\base_events.py", line 900, in getaddrinfo
+    return await self.run_in_executor(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\concurrent\futures\thread.py", line 59, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\socket.py", line 976, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+socket.gaierror: [Errno 11001] getaddrinfo failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\client.py", line 656, in connect
+    self.ws = await asyncio.wait_for(coro, timeout=60.0)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\asyncio\tasks.py", line 520, in wait_for
+    return await fut
+           ^^^^^^^^^
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\gateway.py", line 372, in from_client
+    socket = await client.http.ws_connect(str(url))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\discord\http.py", line 537, in ws_connect
+    return await self.__session.ws_connect(url, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client.py", line 835, in _ws_connect
+    resp = await self.request(
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\client.py", line 581, in _request
+    conn = await self._connector.connect(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 544, in connect
+    proto = await self._create_connection(req, traces, timeout)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 944, in _create_connection
+    _, proto = await self._create_direct_connection(req, traces, timeout)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\erins\AppData\Local\Programs\Python\Python312\Lib\site-packages\aiohttp\connector.py", line 1209, in _create_direct_connection
+    raise ClientConnectorError(req.connection_key, exc) from exc
+aiohttp.client_exceptions.ClientConnectorError: Cannot connect to host gateway-us-east1-d.discord.gg:443 ssl:default [getaddrinfo failed]
+[2026-04-28 08:15:32] [WARNING ] discord.gateway: Shard ID None has stopped responding to the gateway. Closing and restarting.
+[2026-04-29 08:31:36] [WARNING ] discord.client: PyNaCl is not installed, voice will NOT be supported
+[2026-04-29 08:31:36] [WARNING ] sasha.discord: Network not ready, retrying in 5s...
+[2026-04-29 08:31:41] [WARNING ] sasha.discord: Network not ready, retrying in 10s...
+[2026-04-30 07:39:27] [WARNING ] discord.client: PyNaCl is not installed, voice will NOT be supported
+[2026-04-30 07:39:27] [WARNING ] sasha.discord: Network not ready, retrying in 5s...
+[2026-04-30 07:39:32] [WARNING ] sasha.discord: Network not ready, retrying in 10s...
+[2026-04-30 22:45:20] [WARNING ] discord.client: PyNaCl is not installed, voice will NOT be supported
+[2026-04-30 22:45:20] [WARNING ] sasha.discord: Network not ready, retrying in 5s...
+[2026-04-30 22:45:25] [WARNING ] sasha.discord: Network not ready, retrying in 10s...
+[2026-04-30 22:46:48] [WARNING ] discord.client: PyNaCl is not installed, voice will NOT be supported
+[2026-04-30 22:46:48] [WARNING ] sasha.discord: Network not ready, retrying in 5s...
+[2026-04-30 22:46:53] [WARNING ] sasha.discord: Network not ready, retrying in 10s...
+[2026-05-01 07:27:25] [WARNING ] discord.client: PyNaCl is not installed, voice will NOT be supported
+[2026-05-01 07:27:25] [WARNING ] sasha.discord: Network not ready, retrying in 5s...
+[2026-05-01 07:27:30] [WARNING ] sasha.discord: Network not ready, retrying in 10s...
